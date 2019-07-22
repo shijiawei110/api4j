@@ -42,7 +42,7 @@ public class ApiForJException extends RuntimeException {
     }
 
     public ApiForJException(String msg) {
-        this.code = 10000;
+        this.code = 999999;
         this.msg = msg;
     }
 

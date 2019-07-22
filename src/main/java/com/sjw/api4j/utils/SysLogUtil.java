@@ -1,5 +1,7 @@
 package com.sjw.api4j.utils;
 
+import com.sjw.api4j.expection.ApiForJException;
+
 import java.text.MessageFormat;
 
 /**
@@ -18,5 +20,9 @@ public class SysLogUtil {
 
     public static void info(final String msg, Object params) {
         System.out.println(MessageFormat.format(TPOIC + msg, params));
+    }
+
+    public static void printExpection(ApiForJException e) {
+        System.out.println(TPOIC + "take a expection : " + e.getMessage());
     }
 }
