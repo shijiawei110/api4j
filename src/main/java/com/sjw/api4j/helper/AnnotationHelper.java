@@ -1,7 +1,12 @@
 package com.sjw.api4j.helper;
 
+import com.sjw.api4j.enums.ApiTagParamsEnum;
+import com.sjw.api4j.model.ApiTagPojo;
+import com.sjw.api4j.utils.StringPool;
 import com.thoughtworks.qdox.model.JavaAnnotation;
+import com.thoughtworks.qdox.model.JavaClass;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -13,31 +18,80 @@ import java.util.List;
 public class AnnotationHelper {
 
     private static final String API_TAG_NAME = "com.sjw.api4j.annotation.ApiTag";
+    private static final String WS_RS_PATH = "javax.ws.rs.Path";
+    private static final String WS_RS_PATH_VALUE = "value";
+    private static final String MVC_PATH = "org.springframework.web.bind.annotation.RequestMapping";
+    private static final String MVC_PATH_VALUE = "value";
+
 
     /**
      * 是否标记 apiTag
      */
-    public static boolean isApiTag(List<JavaAnnotation> javaAnnotations) {
+    public static ApiTagPojo isApiTag(List<JavaAnnotation> javaAnnotations) {
         if (CollectionUtils.isEmpty(javaAnnotations)) {
-            return false;
+            return null;
         }
         for (JavaAnnotation javaAnnotation : javaAnnotations) {
-            if (isApiTag(javaAnnotation)) {
-                return true;
+            ApiTagPojo apiTagPojo = isApiTag(javaAnnotation);
+            if (null != apiTagPojo) {
+                return apiTagPojo;
             }
         }
-        return false;
+        return null;
     }
 
-    public static boolean isApiTag(JavaAnnotation annotation) {
+
+    private static ApiTagPojo isApiTag(JavaAnnotation annotation) {
         if (null == annotation) {
-            return false;
+            return null;
         }
-        return API_TAG_NAME.equals(annotation.getType().toString());
+        if (API_TAG_NAME.equalsIgnoreCase(annotation.getType().toString())) {
+            ApiTagPojo apiTagPojo = new ApiTagPojo();
+            Object value = annotation.getNamedParameter(ApiTagParamsEnum.VALUE.getValue());
+            if (null != value) {
+                apiTagPojo.setValue((String) value);
+            }
+            Object protocol = annotation.getNamedParameter(ApiTagParamsEnum.PROTOCOL.getValue());
+            if (null != protocol) {
+                apiTagPojo.setProtocol((String) protocol);
+            }
+
+            return apiTagPojo;
+        }
+        return null;
     }
 
     /**
      * 寻找标记了类路径的path参数 默认为/
      */
+    public static String getClassPath(JavaClass javaClass, String commonPath) {
+        commonPath = checkPath(commonPath);
+        String classPath = StringPool.EMPTY;
+        List<JavaAnnotation> annos = javaClass.getAnnotations();
+        for (JavaAnnotation p : annos) {
+            if (WS_RS_PATH.equalsIgnoreCase(p.getType().toString())) {
+                classPath = (String) p.getProperty(WS_RS_PATH_VALUE).getParameterValue();
+            }
+            if (MVC_PATH.equalsIgnoreCase(p.getType().toString())) {
+                classPath = (String) p.getProperty(MVC_PATH_VALUE).getParameterValue();
+            }
+        }
+        classPath = checkPath(classPath);
+        return commonPath + classPath;
+
+    }
+
+
+    private static String checkPath(String path) {
+        if (StringUtils.isBlank(path)) {
+            return StringPool.EMPTY;
+        }
+        if (path.startsWith(StringPool.SLASH)) {
+            return path;
+        } else {
+            return StringPool.SLASH + path;
+        }
+    }
+
 
 }

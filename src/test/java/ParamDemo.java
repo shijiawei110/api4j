@@ -1,7 +1,9 @@
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -15,6 +17,7 @@ import java.util.List;
 @Data
 public class ParamDemo {
 
+    @Length(min = 1,max = 1000)
     private Long id;
 
     @JsonProperty("test_id")

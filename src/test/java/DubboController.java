@@ -1,4 +1,5 @@
 import com.sjw.api4j.annotation.ApiTag;
+import com.sjw.api4j.enums.ProtocolEnum;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.GET;
@@ -12,7 +13,7 @@ import java.util.List;
  * @date 2019/7/28
  */
 @Path("dubbo-controller")
-@ApiTag(value = "kkkk")
+@ApiTag(value = "kkkk" ,protocol = ProtocolEnum.DUBBO)
 public interface DubboController {
 
     /**
@@ -25,6 +26,12 @@ public interface DubboController {
     @Path("/getTest")
     List<Movie> getTest(Integer id, String name);
 
+
+    /**
+     * this is get test2 note.
+     * @param id
+     * @return
+     */
     @GET
     @Path("getTest2")
     List<String> getTest2(@RequestParam(value = "ID") Integer id);

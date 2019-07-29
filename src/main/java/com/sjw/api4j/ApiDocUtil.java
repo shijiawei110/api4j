@@ -19,6 +19,8 @@ import java.util.List;
 public class ApiDocUtil {
 
     public static void main(String[] args) {
+        ApiDocConf apiDocConf = new ApiDocConf();
+        makeApiDoc(apiDocConf);
     }
 
     public static void makeApiDoc(ApiDocConf apiDocConf) {
@@ -35,12 +37,16 @@ public class ApiDocUtil {
     private static void doMakeApiDoc(ApiDocConf apiDocConf) {
         SysLogUtil.sysStart();
         //获取方法集
-        List<ApiTagClass> apiTagClassList = ApiDocHelper.getAllMethods();
+        List<ApiTagClass> apiTagClassList = ApiDocHelper.getAllMethods(apiDocConf.getCommonPath());
         if (CollectionUtils.isEmpty(apiTagClassList)) {
             SysLogUtil.info("没有找到注解标记的需要生成文档的方法");
             return;
         }
         //将包装method build成参数集
+
+        apiTagClassList.stream().forEach(p->{
+            System.out.println(p.toString());
+        });
 
         SysLogUtil.sysEnd();
     }
