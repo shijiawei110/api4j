@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Data
 public class ApiTagClass {
+
     private String path;
 
     private List<ApiTagMethod> methods = Lists.newArrayList();
