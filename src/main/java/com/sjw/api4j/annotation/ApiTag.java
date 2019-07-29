@@ -1,5 +1,8 @@
 package com.sjw.api4j.annotation;
 
+import com.sjw.api4j.enums.ProtocolEnum;
+import com.sjw.api4j.utils.StringPool;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -16,5 +19,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
 public @interface ApiTag {
-    String value();
+
+    String value() default StringPool.EMPTY;
+
+    ProtocolEnum protocol() default ProtocolEnum.REST;
 }

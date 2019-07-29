@@ -15,6 +15,12 @@ public class ApiTagClass {
 
     private String path;
 
+    private String note;
+
     private List<ApiTagMethod> methods = Lists.newArrayList();
+
+    public void addMethods(ApiTagMethod apiTagMethod) {
+        methods.add(apiTagMethod);
+    }
 
 }

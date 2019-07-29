@@ -1,5 +1,6 @@
 package com.sjw.api4j.model;
 
+import com.sjw.api4j.enums.ProtocolEnum;
 import com.thoughtworks.qdox.model.JavaMethod;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -15,10 +16,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class ApiTagMethod {
     private JavaMethod javaMethod;
     private String tagValue;
+    private String note;
+    private ProtocolEnum protocol;
 
-    public ApiTagMethod(JavaMethod javaMethod, String tagValue) {
+    public ApiTagMethod(JavaMethod javaMethod, String tagValue, ProtocolEnum protocol) {
         this.javaMethod = javaMethod;
         this.tagValue = tagValue;
+        this.protocol = protocol;
+        this.note = javaMethod.getComment();
     }
 
     @Override

@@ -6,12 +6,13 @@ package com.sjw.api4j.enums;
  * @date 2019/7/7
  * usdt 币币交易对
  */
-public enum AccountTypeEnum {
-    SPOT("spot");
+public enum ApiTagParamsEnum {
+    VALUE("value"),
+    PROTOCOL("protocol");
 
     private String value;
 
-    AccountTypeEnum(String value) {
+    ApiTagParamsEnum(String value) {
         this.value = value;
     }
 

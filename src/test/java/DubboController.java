@@ -15,6 +15,12 @@ import java.util.List;
 @ApiTag(value = "kkkk")
 public interface DubboController {
 
+    /**
+     * this is get Test note.
+     * @param id
+     * @param name
+     * @return
+     */
     @GET
     @Path("/getTest")
     List<Movie> getTest(Integer id, String name);

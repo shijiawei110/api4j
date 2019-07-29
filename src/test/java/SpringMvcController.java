@@ -28,6 +28,11 @@ public class SpringMvcController {
         return null;
     }
 
+    /**
+     * 这是mvc post test1 note.
+     * @param paramDemo
+     * @return
+     */
     @PostMapping("/postTest1")
     @ApiTag(value = "这是mvc post test1")
     public String postTest1(ParamDemo paramDemo) {
