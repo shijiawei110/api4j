@@ -10,12 +10,7 @@ public class ApiForJException extends RuntimeException {
     /**
      * 参数异常
      */
-    public static final ApiForJException SYSTEM_ERROR = new ApiForJException(9999, "系统错误");
-    public static final ApiForJException BT_TYPE_NOT_EXIST = new ApiForJException(9001, "币种不存在");
-    public static final ApiForJException GET_RESPONSE_ERROR = new ApiForJException(1001, "获取api结果异常");
-    public static final ApiForJException ORDER_ID_IS_NULL = new ApiForJException(1002, "订单号为空");
-    public static final ApiForJException OUT_MAX_ORDER_RETRY = new ApiForJException(1003, "达到交易最大重试次数,停止下单");
-    public static final ApiForJException NOT_FIND_CACHE_LIST = new ApiForJException(1004, "寻找到的缓存为空");
+    public static final ApiForJException SYSTEM_ERROR = new ApiForJException(99999, "系统错误");
 
 
     /**
