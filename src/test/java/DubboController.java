@@ -11,6 +11,7 @@ import java.util.List;
  * @author shijiawei
  * @version DubboController.java -> v 1.0
  * @date 2019/7/28
+ * 这是dubbo controller class的注解
  */
 @Path("dubbo-controller")
 @ApiTag(value = "kkkk" ,protocol = ProtocolEnum.DUBBO)

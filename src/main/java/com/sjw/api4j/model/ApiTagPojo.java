@@ -1,6 +1,7 @@
 package com.sjw.api4j.model;
 
 import com.sjw.api4j.enums.ProtocolEnum;
+import com.sjw.api4j.helper.AnnotationHelper;
 import com.sjw.api4j.utils.StringPool;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,9 +27,7 @@ public class ApiTagPojo {
     }
 
     public void setValue(String value) {
-        value = value.substring(1, value.length());
-        value = value.substring(0, value.length() - 1);
-        this.value = value;
+        this.value = AnnotationHelper.handRawStr(value);
     }
 
     public ProtocolEnum getProtocol() {

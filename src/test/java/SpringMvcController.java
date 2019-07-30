@@ -12,18 +12,29 @@ import java.util.List;
 @RequestMapping(value = "/mvc-controller")
 public class SpringMvcController {
 
+    /**
+     * 这是mvc get test1 note.
+     */
     @GetMapping("/getTest1")
     @ApiTag(value = "这是mvc get test1")
     public String getTest1(String name) {
         return null;
     }
 
+    /**
+     * 这是mvc get test2 note.
+     */
     @GetMapping("getTest2")
+    @ApiTag(value = "这是mvc get test2")
     public List<String> getTest2(@RequestParam(value = "ID") Integer id) {
         return null;
     }
 
+    /**
+     * 这是mvc get test3 note.
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/getTest3")
+    @ApiTag(value = "这是mvc get test3")
     public List<String> getTest3(@RequestParam(value = "ID") Integer id) {
         return null;
     }
@@ -39,6 +50,9 @@ public class SpringMvcController {
         return null;
     }
 
+    /**
+     * 这是mvc post test2 note.
+     */
     @PostMapping("postTest2")
     @ApiTag(value = "这是mvc post test2")
     public List<Movie> postTest2(ParamDemo paramDemo) {

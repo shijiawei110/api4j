@@ -60,4 +60,12 @@ public class ApiDocHelper {
         SysLogUtil.duration("read all java class and methods", start);
         return result;
     }
+
+    /**
+     * 解析方法
+     * @param apiTagMethod
+     */
+    public static void analyMethod(ApiTagMethod apiTagMethod){
+
+    }
 }

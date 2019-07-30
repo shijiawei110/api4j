@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 

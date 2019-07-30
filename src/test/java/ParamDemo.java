@@ -18,6 +18,7 @@ import java.util.List;
 public class ParamDemo {
 
     @Length(min = 1,max = 1000)
+    @NotNull
     private Long id;
 
     @JsonProperty("test_id")
