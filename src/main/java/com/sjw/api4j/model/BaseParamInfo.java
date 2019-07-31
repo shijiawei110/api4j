@@ -1,7 +1,9 @@
 package com.sjw.api4j.model;
 
-import com.google.common.collect.Lists;
+import com.sjw.api4j.utils.StringPool;
 import lombok.Data;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
@@ -16,35 +18,37 @@ public class BaseParamInfo {
     /**
      * 参数名
      */
-    private String name;
+    private String name = StringPool.EMPTY;
 
     /**
      * 参数描述
      */
-    private String desc;
+    private String desc = StringPool.EMPTY;
 
     /**
      * 参数类型
      */
-    private String type;
+    private String type = StringPool.EMPTY;
 
     /**
      * 是否必须
      */
-    private boolean required = false;
+    private boolean required = true;
 
     /**
      * 长度
      */
-    private String length;
+    private String length = StringPool.EMPTY;
 
-    /**
-     * 子参数总长度
-     */
-    private Integer childSize = 0;
 
     /**
      * 子参数
      */
-    private List<BaseParamInfo> childrens = Lists.newArrayList();
+    private List<BaseParamInfo> childrens = null;
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.reflectionToString(this,
+                ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

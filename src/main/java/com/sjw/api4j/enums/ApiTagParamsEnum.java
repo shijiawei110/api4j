@@ -2,12 +2,12 @@ package com.sjw.api4j.enums;
 
 /**
  * @author shijiawei
- * @version UsdtTradeEnum.java -> v 1.0
+ * @version ApiTagParamsEnum.java -> v 1.0
  * @date 2019/7/7
- * usdt 币币交易对
  */
 public enum ApiTagParamsEnum {
     VALUE("value"),
+    AUTHOR("author"),
     PROTOCOL("protocol");
 
     private String value;

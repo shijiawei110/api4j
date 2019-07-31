@@ -18,12 +18,22 @@ public class ApiTagMethod {
     private String tagValue;
     private String note;
     private ProtocolEnum protocol;
+    private String author;
 
-    public ApiTagMethod(JavaMethod javaMethod, String tagValue, ProtocolEnum protocol) {
+    public ApiTagMethod(JavaMethod javaMethod, String tagValue, ProtocolEnum protocol, String author) {
         this.javaMethod = javaMethod;
         this.tagValue = tagValue;
         this.protocol = protocol;
+        this.author = author;
         this.note = javaMethod.getComment();
+    }
+
+    public ApiTagMethod(JavaMethod javaMethod, ApiTagPojo apiTagPojo) {
+        this.javaMethod = javaMethod;
+        this.note = javaMethod.getComment();
+        this.tagValue = apiTagPojo.getValue();
+        this.protocol = apiTagPojo.getProtocol();
+        this.author = apiTagPojo.getAuthor();
     }
 
     @Override

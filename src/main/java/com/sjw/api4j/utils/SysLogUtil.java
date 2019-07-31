@@ -18,8 +18,9 @@ public class SysLogUtil {
         System.out.println(TPOIC + ">>> system start .");
     }
 
-    public static void sysEnd() {
-        System.out.println(TPOIC + ">>> system end .");
+    public static void sysEnd(long start) {
+        long duration = System.currentTimeMillis() - start;
+        System.out.println(TPOIC + ">>> system end -> duration = " + duration + " ms");
     }
 
     public static void info(final String msg) {

@@ -1,10 +1,11 @@
 import com.sjw.api4j.annotation.ApiTag;
 import com.sjw.api4j.enums.ProtocolEnum;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import java.util.List;
 
 /**
@@ -14,30 +15,30 @@ import java.util.List;
  * 这是dubbo controller class的注解
  */
 @Path("dubbo-controller")
-@ApiTag(value = "kkkk" ,protocol = ProtocolEnum.DUBBO)
+//@ApiTag(value = "kkkk", protocol = ProtocolEnum.DUBBO)
 public interface DubboController {
 
     /**
      * this is get Test note.
-     * @param id
-     * @param name
+     *
      * @return
      */
     @GET
     @Path("/getTest")
-    List<Movie> getTest(Integer id, String name);
+    List<Movie> getTest(@QueryParam("test_id") Integer testId, String testName);
 
 
-    /**
-     * this is get test2 note.
-     * @param id
-     * @return
-     */
-    @GET
-    @Path("getTest2")
-    List<String> getTest2(@RequestParam(value = "ID") Integer id);
+//    /**
+//     * this is get test2 note.
+//     * @param id
+//     * @return
+//     */
+//    @GET
+//    @Path("getTest2")
+//    List<String> getTest2(@QueryParam("test_id") Integer id);
 
-    @POST
-    @Path("postTest1")
-    List<Movie> postTest1(ParamDemo paramDemo);
+
+//    @POST
+//    @Path("postTest1")
+//    List<Movie> postTest1(ParamDemo paramDemo);
 }

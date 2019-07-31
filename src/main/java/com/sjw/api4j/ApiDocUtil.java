@@ -36,6 +36,7 @@ public class ApiDocUtil {
 
     private static void doMakeApiDoc(ApiDocConf apiDocConf) {
         SysLogUtil.sysStart();
+        long start = System.currentTimeMillis();
         //获取方法集
         List<ApiTagClass> apiTagClassList = ApiDocHelper.getAllMethods(apiDocConf.getCommonPath());
         if (CollectionUtils.isEmpty(apiTagClassList)) {
@@ -43,12 +44,12 @@ public class ApiDocUtil {
             return;
         }
         //将包装method build成参数集
+        apiTagClassList.stream().forEach(ApiDocHelper::analyMethods);
+//        apiTagClassList.stream().forEach(p->{
+//            System.out.println(p.toString());
+//        });
 
-        apiTagClassList.stream().forEach(p->{
-            System.out.println(p.toString());
-        });
-
-        SysLogUtil.sysEnd();
+        SysLogUtil.sysEnd(start);
     }
 
 }

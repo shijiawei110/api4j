@@ -22,6 +22,8 @@ public class ApiTagPojo {
 
     private ProtocolEnum protocol = ProtocolEnum.REST;
 
+    private String author = StringPool.EMPTY;
+
     public String getValue() {
         return value;
     }
@@ -44,5 +46,13 @@ public class ApiTagPojo {
         if (DUBBO.equals(protocol)) {
             this.protocol = ProtocolEnum.DUBBO;
         }
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = AnnotationHelper.handRawStr(author);
     }
 }
