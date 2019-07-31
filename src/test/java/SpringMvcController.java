@@ -1,6 +1,8 @@
 import com.sjw.api4j.annotation.ApiTag;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -16,9 +18,9 @@ public class SpringMvcController {
      * 这是mvc get test1 note.
      */
     @GetMapping("/getTest1")
-//    @ApiTag(value = "这是mvc get test1", author = "sjw")
-    public String getTest1(String name, Integer id) {
-        return null;
+    @ApiTag(value = "这是mvc get test1", author = "sjw")
+    public int getTest1(String name, Integer id) {
+        return 1;
     }
 
     /**
@@ -26,7 +28,8 @@ public class SpringMvcController {
      */
     @GetMapping("getTest2")
     @ApiTag(value = "这是mvc get test2", author = "sjw")
-    public List<String> getTest2(@RequestParam(value = "test_id",required = false) Integer id, String name) {
+    public List<Book> getTest2(@RequestParam(value = "test_id", required = false) Integer id, String name, HttpServletRequest request, HttpServletResponse response) {
+
         return null;
     }
 
@@ -56,7 +59,7 @@ public class SpringMvcController {
      */
     @PostMapping("/postTest1")
 //    @ApiTag(value = "这是mvc post test1", author = "sjw")
-    public String postTest1(ParamDemo paramDemo) {
+    public String postTest1(ParamDemo paramDemo, HttpServletRequest request, HttpServletResponse response) {
         return null;
     }
 

@@ -29,7 +29,7 @@ public class ApiTagPojo {
     }
 
     public void setValue(String value) {
-        this.value = AnnotationHelper.handRawStr(value);
+        this.value = value;
     }
 
     public ProtocolEnum getProtocol() {
@@ -53,6 +53,6 @@ public class ApiTagPojo {
     }
 
     public void setAuthor(String author) {
-        this.author = AnnotationHelper.handRawStr(author);
+        this.author = author;
     }
 }

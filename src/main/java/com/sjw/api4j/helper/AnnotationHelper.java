@@ -65,19 +65,9 @@ public class AnnotationHelper {
         }
         if (isPointAnn(annotation, API_TAG_NAME)) {
             ApiTagPojo apiTagPojo = new ApiTagPojo();
-            Object value = annotation.getNamedParameter(ApiTagParamsEnum.VALUE.getValue());
-            if (null != value) {
-                apiTagPojo.setValue((String) value);
-            }
-            Object protocol = annotation.getNamedParameter(ApiTagParamsEnum.PROTOCOL.getValue());
-            if (null != protocol) {
-                apiTagPojo.setProtocol((String) protocol);
-            }
-            Object author = annotation.getNamedParameter(ApiTagParamsEnum.AUTHOR.getValue());
-            if (null != author) {
-                apiTagPojo.setAuthor((String) author);
-            }
-
+            apiTagPojo.setValue(getAnnoParamValue(annotation, ApiTagParamsEnum.VALUE.getValue()));
+            apiTagPojo.setProtocol(getAnnoParamValue(annotation, ApiTagParamsEnum.PROTOCOL.getValue()));
+            apiTagPojo.setAuthor(getAnnoParamValue(annotation, ApiTagParamsEnum.AUTHOR.getValue()));
             return apiTagPojo;
         }
         return null;
@@ -92,15 +82,13 @@ public class AnnotationHelper {
         List<JavaAnnotation> annos = javaClass.getAnnotations();
         for (JavaAnnotation p : annos) {
             if (WS_RS_PATH.equalsIgnoreCase(getAnnoClassName(p))) {
-                classPath = (String) p.getNamedParameter(WS_RS_PATH_VALUE);
+                classPath = getAnnoParamValue(p, WS_RS_PATH_VALUE);
             }
             if (MVC_PATH.equalsIgnoreCase(getAnnoClassName(p))) {
-                classPath = (String) p.getNamedParameter(MVC_PATH_VALUE);
+                classPath = getAnnoParamValue(p, MVC_PATH_VALUE);
             }
         }
-        if (StringUtils.isNotBlank(classPath)) {
-            classPath = handRawStr(classPath);
-        }
+
         classPath = checkPath(classPath);
         return commonPath + classPath;
     }
@@ -154,19 +142,18 @@ public class AnnotationHelper {
         }
         for (JavaAnnotation javaAnnotation : annos) {
             if (isPointAnn(javaAnnotation, WS_RS_PATH)) {
-                path = (String) javaAnnotation.getNamedParameter(WS_RS_PATH_VALUE);
+                path = getAnnoParamValue(javaAnnotation, WS_RS_PATH_VALUE);
             }
             if (isPointAnn(javaAnnotation, MVC_PATH)) {
-                path = (String) javaAnnotation.getNamedParameter(MVC_PATH_VALUE);
+                path = getAnnoParamValue(javaAnnotation, MVC_PATH_VALUE);
             }
             if (isPointAnn(javaAnnotation, MVC_GET_PATH)) {
-                path = (String) javaAnnotation.getNamedParameter(MVC_PATH_VALUE);
+                path = getAnnoParamValue(javaAnnotation, MVC_PATH_VALUE);
             }
             if (isPointAnn(javaAnnotation, MVC_POST_PATH)) {
-                path = (String) javaAnnotation.getNamedParameter(MVC_PATH_VALUE);
+                path = getAnnoParamValue(javaAnnotation, MVC_PATH_VALUE);
             }
         }
-        path = handRawStr(path);
         path = checkPath(path);
         return path;
     }
@@ -180,11 +167,11 @@ public class AnnotationHelper {
         }
         for (JavaAnnotation javaAnnotation : javaAnnotations) {
             if (isPointAnn(javaAnnotation, WS_RS_QUERY_PARAM)) {
-                String aliasName = (String) javaAnnotation.getNamedParameter(WS_RS_QUERY_VALUE);
+                String aliasName = getAnnoParamValue(javaAnnotation, WS_RS_QUERY_VALUE);
                 return aliasName;
             }
             if (isPointAnn(javaAnnotation, MVC_REQUEST_PARAM)) {
-                String aliasName = (String) javaAnnotation.getNamedParameter(MVC_REQUEST_VALUE);
+                String aliasName = getAnnoParamValue(javaAnnotation, MVC_REQUEST_VALUE);
                 return aliasName;
             }
         }
@@ -200,7 +187,7 @@ public class AnnotationHelper {
         }
         for (JavaAnnotation javaAnnotation : javaAnnotations) {
             if (isPointAnn(javaAnnotation, MVC_REQUEST_PARAM)) {
-                String required = (String) javaAnnotation.getNamedParameter(MVC_REQUEST_REQUIRED);
+                String required = getAnnoParamValue(javaAnnotation, MVC_REQUEST_REQUIRED);
                 if (StringUtils.isBlank(required)) {
                     return true;
                 }
@@ -225,18 +212,6 @@ public class AnnotationHelper {
         } else {
             return StringPool.SLASH + path;
         }
-    }
-
-    /**
-     * 去除qdox文件读取前后的引号
-     */
-    public static String handRawStr(String rawStr) {
-        if (StringUtils.isBlank(rawStr)) {
-            return StringPool.EMPTY;
-        }
-        rawStr = rawStr.substring(1, rawStr.length());
-        rawStr = rawStr.substring(0, rawStr.length() - 1);
-        return rawStr;
     }
 
     private static boolean isPointAnn(JavaAnnotation javaAnnotation, String target) {
@@ -264,6 +239,26 @@ public class AnnotationHelper {
             return StringPool.EMPTY;
         }
         return javaAnnotation.getType().getFullyQualifiedName();
+    }
+
+    private static String getAnnoParamValue(JavaAnnotation javaAnnotation, String param) {
+        Object obj = javaAnnotation.getNamedParameter(param);
+        if (null == obj) {
+            return StringPool.EMPTY;
+        }
+        String str = String.valueOf(obj);
+        return handRawStr(str);
+    }
+
+    private static String handRawStr(String rawStr) {
+        if (StringUtils.isBlank(rawStr)) {
+            return StringPool.EMPTY;
+        }
+        if (rawStr.startsWith(StringPool.QUOTATION)) {
+            rawStr = rawStr.substring(1, rawStr.length());
+            rawStr = rawStr.substring(0, rawStr.length() - 1);
+        }
+        return rawStr;
     }
 
 

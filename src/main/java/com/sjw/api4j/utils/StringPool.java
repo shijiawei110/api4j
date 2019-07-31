@@ -70,4 +70,5 @@ public class StringPool {
     public static final String HTML_LT = "&lt;";
     public static final String HTML_GT = "&gt;";
     public static final String SUCCESS = "success";
+    public static final String QUOTATION = "\"";
 }

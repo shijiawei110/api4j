@@ -20,6 +20,13 @@ public class ApiMethodInfo {
     private HttpTypeEnum httpTypeEnum;
     private String path;
     private List<BaseParamInfo> inputParams;
+    private List<BaseParamInfo> outputParams;
+
+    public ApiMethodInfo(ApiTagMethod apiTagMethod) {
+        this.author = apiTagMethod.getAuthor();
+        this.note = apiTagMethod.getNote();
+        this.tagValue = apiTagMethod.getTagValue();
+    }
 
     @Override
     public String toString() {

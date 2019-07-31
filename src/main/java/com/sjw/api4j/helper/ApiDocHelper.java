@@ -73,11 +73,8 @@ public class ApiDocHelper {
     }
 
     private static void analyMethod(ApiTagMethod apiTagMethod, String basePath) {
-        ApiMethodInfo apiMethodInfo = new ApiMethodInfo();
+        ApiMethodInfo apiMethodInfo = new ApiMethodInfo(apiTagMethod);
         JavaMethod javaMethod = apiTagMethod.getJavaMethod();
-        apiMethodInfo.setAuthor(apiTagMethod.getAuthor());
-        apiMethodInfo.setNote(apiTagMethod.getNote());
-        apiMethodInfo.setTagValue(apiTagMethod.getTagValue());
         //获取http类型
         apiMethodInfo.setHttpTypeEnum(AnnotationHelper.getMethodHttpType(javaMethod));
         //获取path
@@ -85,8 +82,8 @@ public class ApiDocHelper {
         //分析入参
         apiMethodInfo.setInputParams(analyInput(javaMethod, apiMethodInfo.getHttpTypeEnum().isGet()));
         //分析出参
-
-        System.out.println(apiMethodInfo);
+        analyOutput(javaMethod);
+//        System.out.println(apiMethodInfo);
     }
 
 
@@ -94,6 +91,11 @@ public class ApiDocHelper {
         List<JavaParameter> parameters = javaMethod.getParameters();
         List<BaseParamInfo> result = Lists.newArrayList();
         for (JavaParameter parameter : parameters) {
+            //判断是否需要去除的参数 (比如servelt这种)
+            if (ClassNameHelper.isNeedExcludeInputParam(parameter)) {
+                continue;
+            }
+
             BaseParamInfo baseParamInfo = new BaseParamInfo();
             if (isGet) {
                 //获取name
@@ -105,11 +107,33 @@ public class ApiDocHelper {
                 //查询是否必须
                 baseParamInfo.setRequired(AnnotationHelper.reqGetRequired(parameter.getAnnotations()));
             } else {
+                //post请求待完成 todo
 
             }
             result.add(baseParamInfo);
         }
         return result;
+    }
+
+    private static List<BaseParamInfo> analyOutput(JavaMethod javaMethod) {
+        List<BaseParamInfo> result = Lists.newArrayList();
+        String fullName = javaMethod.getReturns().getFullyQualifiedName();
+        //判断空返回
+        if (ClassNameHelper.isVoid(fullName)) {
+            return null;
+        }
+        //判断java基本型
+        if (ClassNameHelper.isJavaBaseType(fullName)) {
+            BaseParamInfo baseParamInfo = BaseParamInfo.baseJavaType(fullName);
+            result.add(baseParamInfo);
+            return result;
+        }
+        //判断是否为java.lang基础数据类型
+
+        //判断是否为java.util集合类型
+
+//        System.out.println(fullName);
+        return null;
     }
 
 

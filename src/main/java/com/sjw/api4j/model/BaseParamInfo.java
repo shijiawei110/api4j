@@ -15,6 +15,15 @@ import java.util.List;
  */
 @Data
 public class BaseParamInfo {
+
+    private static final String UNKNOWN_NAME = "[unknown]";
+
+    public static BaseParamInfo baseJavaType(String type) {
+        BaseParamInfo baseParamInfo = new BaseParamInfo();
+        baseParamInfo.setType(type);
+        return baseParamInfo;
+    }
+
     /**
      * 参数名
      */
@@ -45,6 +54,7 @@ public class BaseParamInfo {
      * 子参数
      */
     private List<BaseParamInfo> childrens = null;
+
 
     @Override
     public String toString() {

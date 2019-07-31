@@ -2,6 +2,7 @@ import lombok.Data;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,10 @@ import java.util.List;
  * @date 2019/7/28
  */
 @Data
-public class Movie extends FatherRes {
+public class Movie extends FatherRes implements Serializable{
+
+    private static final long serialVersionUID = -1L;
+
     /**
      * 出参str注释
      */
