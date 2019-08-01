@@ -124,12 +124,14 @@ public class ApiDocHelper {
         }
         //判断java基本型
         if (ClassNameHelper.isJavaBaseType(fullName)) {
-            BaseParamInfo baseParamInfo = BaseParamInfo.baseJavaType(fullName);
-            result.add(baseParamInfo);
+            result.add(BaseParamInfo.baseJavaType(fullName));
             return result;
         }
         //判断是否为java.lang基础数据类型
-
+        if(ClassNameHelper.isJavaLang(fullName)){
+            result.add(BaseParamInfo.baseJavaType(fullName));
+            return result;
+        }
         //判断是否为java.util集合类型
 
 //        System.out.println(fullName);

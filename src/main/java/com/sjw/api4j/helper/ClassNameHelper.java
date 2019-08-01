@@ -16,8 +16,8 @@ public class ClassNameHelper {
 
     private static final String VOID = "void";
 
-    private static final String JAVA_COLLECTION_PATH = "java.util";
-    private static final String JAVA_LANG_PATH = "java.lang";
+    private static final String JAVA_COLLECTION_PATH = "java.util.";
+    private static final String JAVA_LANG_PATH = "java.lang.";
 
 
     private static Set<String> EXCLUDE_INPUT_PARAM = Sets.newHashSet();
@@ -64,10 +64,17 @@ public class ClassNameHelper {
     }
 
     public static boolean isJavaBaseType(String className) {
-        if (StringUtils.isBlank(className)) {
-            return false;
-        }
-        return JAVA_BASE_TYPE.contains(className);
+        return !StringUtils.isBlank(className) && JAVA_BASE_TYPE.contains(className);
+    }
+
+    public static boolean isJavaLang(String className) {
+        className = className.substring(0, 10);
+        return !StringUtils.isBlank(className) && JAVA_LANG_PATH.equals(className);
+    }
+
+    public static boolean isJavaUtil(String className) {
+        className = className.substring(0, 10);
+        return !StringUtils.isBlank(className) && JAVA_COLLECTION_PATH.equals(className);
     }
 
 }

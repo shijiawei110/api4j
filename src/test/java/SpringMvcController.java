@@ -19,7 +19,7 @@ public class SpringMvcController {
      */
     @GetMapping("/getTest1")
     @ApiTag(value = "这是mvc get test1", author = "sjw")
-    public int getTest1(String name, Integer id) {
+    public Integer getTest1(String name, Integer id) {
         return 1;
     }
 
