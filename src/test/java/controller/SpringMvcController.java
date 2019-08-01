@@ -1,4 +1,10 @@
+package controller;
+
 import com.sjw.api4j.annotation.ApiTag;
+import model.response.Book;
+import model.response.Movie;
+import model.request.ParamDemo;
+import model.response.BaseResponse;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,7 +13,7 @@ import java.util.List;
 
 /**
  * @author shijiawei
- * @version SpringMvcController.java -> v 1.0
+ * @version controller.SpringMvcController.java -> v 1.0
  * @date 2019/7/28
  */
 @RestController
@@ -19,15 +25,15 @@ public class SpringMvcController {
      */
     @GetMapping("/getTest1")
     @ApiTag(value = "这是mvc get test1", author = "sjw")
-    public Integer getTest1(String name, Integer id) {
-        return 1;
+    public Movie getTest1(String name, Integer id) {
+        return null;
     }
 
     /**
      * 这是mvc get test2 note.
      */
     @GetMapping("getTest2")
-    @ApiTag(value = "这是mvc get test2", author = "sjw")
+//    @ApiTag(value = "这是mvc get test2", author = "sjw")
     public List<Book> getTest2(@RequestParam(value = "test_id", required = false) Integer id, String name, HttpServletRequest request, HttpServletResponse response) {
 
         return null;

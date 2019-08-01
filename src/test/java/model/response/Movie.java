@@ -1,3 +1,6 @@
+package model.response;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -7,7 +10,7 @@ import java.util.List;
 
 /**
  * @author shijiawei
- * @version Movie.java -> v 1.0
+ * @version model.response.Movie.java -> v 1.0
  * @date 2019/7/28
  */
 @Data
@@ -18,10 +21,12 @@ public class Movie extends FatherRes implements Serializable{
     /**
      * 出参str注释
      */
+    @JsonProperty("str_v")
     private String strV;
     /**
      * 出参int注释
      */
+    @JsonProperty("int_v")
     private Integer intV;
     /**
      * 出参long注释

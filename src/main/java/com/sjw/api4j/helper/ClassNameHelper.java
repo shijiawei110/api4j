@@ -24,6 +24,8 @@ public class ClassNameHelper {
 
     private static Set<String> JAVA_BASE_TYPE = Sets.newHashSet();
 
+    private static Set<String> EXCLUDE_FIELD_NAME = Sets.newHashSet();
+
 
     static {
         /**
@@ -43,6 +45,11 @@ public class ClassNameHelper {
         JAVA_BASE_TYPE.add("boolean");
         JAVA_BASE_TYPE.add("char");
         JAVA_BASE_TYPE.add("float");
+
+        /**
+         * 需要排除的变量名
+         */
+        EXCLUDE_FIELD_NAME.add("serialVersionUID");
     }
 
     public static boolean isNeedExcludeInputParam(JavaParameter parameter) {
@@ -75,6 +82,10 @@ public class ClassNameHelper {
     public static boolean isJavaUtil(String className) {
         className = className.substring(0, 10);
         return !StringUtils.isBlank(className) && JAVA_COLLECTION_PATH.equals(className);
+    }
+
+    public static boolean isExcludeField(String fieldName) {
+        return !StringUtils.isBlank(fieldName) && EXCLUDE_FIELD_NAME.contains(fieldName);
     }
 
 }

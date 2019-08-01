@@ -1,7 +1,6 @@
-import com.sjw.api4j.annotation.ApiTag;
-import com.sjw.api4j.enums.ProtocolEnum;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+package controller;
+
+import model.response.Movie;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -10,7 +9,7 @@ import java.util.List;
 
 /**
  * @author shijiawei
- * @version DubboController.java -> v 1.0
+ * @version controller.DubboController.java -> v 1.0
  * @date 2019/7/28
  * 这是dubbo controller class的注解
  */
@@ -40,5 +39,5 @@ public interface DubboController {
 
 //    @POST
 //    @Path("postTest1")
-//    List<Movie> postTest1(ParamDemo paramDemo);
+//    List<model.response.Movie> postTest1(model.request.ParamDemo paramDemo);
 }

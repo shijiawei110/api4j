@@ -1,8 +1,10 @@
+package model.response;
+
 import lombok.Data;
 
 /**
  * @author shijiawei
- * @version BaseResponse.java -> v 1.0
+ * @version model.response.BaseResponse.java -> v 1.0
  * @date 2019/7/30
  */
 @Data

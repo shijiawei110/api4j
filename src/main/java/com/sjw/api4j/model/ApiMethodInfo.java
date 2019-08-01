@@ -5,8 +5,6 @@ import lombok.Data;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.List;
-
 /**
  * @author shijiawei
  * @version ApiMethodInfo.java -> v 1.0
@@ -19,8 +17,9 @@ public class ApiMethodInfo {
     private String tagValue;
     private HttpTypeEnum httpTypeEnum;
     private String path;
-    private List<BaseParamInfo> inputParams;
-    private List<BaseParamInfo> outputParams;
+
+//    private List<BaseParamInfo> inputParams;
+    private BaseParams baseParams;
 
     public ApiMethodInfo(ApiTagMethod apiTagMethod) {
         this.author = apiTagMethod.getAuthor();

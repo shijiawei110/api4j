@@ -27,7 +27,7 @@ public class SysLogUtil {
         System.out.println(TPOIC + msg);
     }
 
-    public static void info(final String msg, Object params) {
+    public static void info(final String msg, Object... params) {
         System.out.println(MessageFormat.format(TPOIC + msg, params));
     }
 

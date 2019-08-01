@@ -1,9 +1,10 @@
-import com.alibaba.fastjson.annotation.JSONField;
+package model.request;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import model.response.Movie;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,7 +12,7 @@ import java.util.List;
 
 /**
  * @author shijiawei
- * @version ParamDemo.java -> v 1.0
+ * @version model.request.ParamDemo.java -> v 1.0
  * @date 2019/7/29
  */
 @Data
@@ -24,7 +25,7 @@ public class ParamDemo {
     @JsonProperty("test_id")
     private Long testId;
 
-    @JSONField(name = "test_age")
+    @JsonProperty("test_age")
     private Integer testAge;
 
     @JsonProperty("test_name")

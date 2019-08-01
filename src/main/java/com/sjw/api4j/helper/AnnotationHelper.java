@@ -41,6 +41,9 @@ public class AnnotationHelper {
     private static final String MVC_REQUEST_VALUE = "value";
     private static final String MVC_REQUEST_REQUIRED = "required";
 
+    private static final String JACKSON_JSONPROPERTY = "com.fasterxml.jackson.annotation.JsonProperty";
+    private static final String JACKSON_JSONPROPERTY_VALUE = "value";
+
 
     /**
      * 是否标记 apiTag
@@ -172,6 +175,22 @@ public class AnnotationHelper {
             }
             if (isPointAnn(javaAnnotation, MVC_REQUEST_PARAM)) {
                 String aliasName = getAnnoParamValue(javaAnnotation, MVC_REQUEST_VALUE);
+                return aliasName;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 参数实体获取别名
+     */
+    public static String paramsAliasName(List<JavaAnnotation> javaAnnotations) {
+        if (CollectionUtils.isEmpty(javaAnnotations)) {
+            return null;
+        }
+        for (JavaAnnotation javaAnnotation : javaAnnotations) {
+            if (isPointAnn(javaAnnotation, JACKSON_JSONPROPERTY)) {
+                String aliasName = getAnnoParamValue(javaAnnotation, JACKSON_JSONPROPERTY_VALUE);
                 return aliasName;
             }
         }
