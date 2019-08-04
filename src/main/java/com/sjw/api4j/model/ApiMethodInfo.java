@@ -18,8 +18,8 @@ public class ApiMethodInfo {
     private HttpTypeEnum httpTypeEnum;
     private String path;
 
-//    private List<BaseParamInfo> inputParams;
-    private BaseParams baseParams;
+    private BaseParams inputParams;
+    private BaseParams outputParams;
 
     public ApiMethodInfo(ApiTagMethod apiTagMethod) {
         this.author = apiTagMethod.getAuthor();

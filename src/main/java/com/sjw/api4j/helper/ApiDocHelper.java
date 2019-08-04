@@ -26,7 +26,7 @@ public class ApiDocHelper {
         List<ApiTagClass> result = Lists.newArrayList();
 
         for (JavaClass jc : classes) {
-            ApiTagClass apiTagClass = new ApiTagClass(AnnotationHelper.getClassPath(jc, commonPath), jc.getComment());
+            ApiTagClass apiTagClass = new ApiTagClass(AnnotationHelper.getClassPath(jc, commonPath), jc.getComment(), jc.getName());
             boolean isApiClass = false;
             List<JavaMethod> methods = jc.getMethods();
             //首先判断class是否标记
@@ -63,15 +63,17 @@ public class ApiDocHelper {
     /**
      * 解析每个方法
      */
-    public static void analyMethods(ApiTagClass apiTagClass) {
+    public static List<ApiMethodInfo> analyMethods(ApiTagClass apiTagClass) {
         String basePath = apiTagClass.getPath();
         //类注释暂时用不到
         String note = apiTagClass.getNote();
         List<ApiTagMethod> apiTagMethods = apiTagClass.getMethods();
-        apiTagMethods.stream().forEach(apiTagMethod -> analyMethod(apiTagMethod, basePath));
+        List<ApiMethodInfo> apiMethodInfos = Lists.newArrayList();
+        apiTagMethods.stream().forEach(apiTagMethod -> analyMethod(apiTagMethod, basePath, apiMethodInfos));
+        return apiMethodInfos;
     }
 
-    private static void analyMethod(ApiTagMethod apiTagMethod, String basePath) {
+    private static void analyMethod(ApiTagMethod apiTagMethod, String basePath, List<ApiMethodInfo> apiMethodInfos) {
         try {
             ApiMethodInfo apiMethodInfo = new ApiMethodInfo(apiTagMethod);
             JavaMethod javaMethod = apiTagMethod.getJavaMethod();
@@ -80,41 +82,41 @@ public class ApiDocHelper {
             //获取path
             apiMethodInfo.setPath(basePath + AnnotationHelper.getMethodPath(javaMethod));
             //分析入参
-//            apiMethodInfo.setInputParams(analyInput(javaMethod, apiMethodInfo.getHttpTypeEnum().isGet()));
+            apiMethodInfo.setInputParams(analyInput(javaMethod, apiMethodInfo.getHttpTypeEnum().isGet()));
             //分析出参
-            apiMethodInfo.setBaseParams(analyOutput(javaMethod));
+            apiMethodInfo.setOutputParams(analyOutput(javaMethod));
+            apiMethodInfos.add(apiMethodInfo);
         } catch (Exception e) {
             SysLogUtil.info("分析方法 {0} 失败 -> msg = {1}", apiTagMethod.getJavaMethod().getName(), e.getMessage());
         }
     }
 
 
-//    private static List<BaseParamInfo> analyInput(JavaMethod javaMethod, boolean isGet) {
-//        List<JavaParameter> parameters = javaMethod.getParameters();
-//        List<BaseParamInfo> result = Lists.newArrayList();
-//        for (JavaParameter parameter : parameters) {
-//            //判断是否需要去除的参数 (比如servelt这种)
-//            if (ClassNameHelper.isNeedExcludeInputParam(parameter)) {
-//                continue;
-//            }
-//            BaseParamInfo baseParamInfo = new BaseParamInfo();
-//            if (isGet) {
-//                //获取name
-//                baseParamInfo.setName(getInputParamName(parameter));
-//                //获取参数类型
-//                baseParamInfo.setType(parameter.getFullyQualifiedName());
-//                //get请求没有参数描述
-//                baseParamInfo.setDesc(baseParamInfo.getName());
-//                //查询是否必须
-//                baseParamInfo.setRequired(AnnotationHelper.reqGetRequired(parameter.getAnnotations()));
-//            } else {
-//                //post请求待完成 todo
-//
-//            }
-//            result.add(baseParamInfo);
-//        }
-//        return result;
-//    }
+    private static BaseParams analyInput(JavaMethod javaMethod, boolean isGet) {
+        List<JavaParameter> parameters = javaMethod.getParameters();
+        BaseParams result = new BaseParams();
+        for (JavaParameter parameter : parameters) {
+            //判断是否需要去除的参数 (比如servelt这种)
+            if (ClassNameHelper.isNeedExcludeInputParam(parameter)) {
+                continue;
+            }
+            BaseParams param = new BaseParams();
+            if (isGet) {
+                //获取name
+                param.setName(getInputParamName(parameter));
+                //获取参数类型
+                param.setType(parameter.getFullyQualifiedName());
+                //get请求没有参数描述
+                param.setDesc(param.getName());
+                //查询是否必须
+                param.setRequired(AnnotationHelper.reqGetRequired(parameter.getAnnotations()));
+                result.addChild(param);
+            } else {
+                result = commonGetParams(parameter.getJavaClass(), null);
+            }
+        }
+        return result;
+    }
 
     private static BaseParams analyOutput(JavaMethod javaMethod) {
         JavaClass javaClass = javaMethod.getReturns();
@@ -123,13 +125,13 @@ public class ApiDocHelper {
         if (ClassNameHelper.isVoid(fullName)) {
             return null;
         }
-        return getOutputParams(javaClass, null);
+        return commonGetParams(javaClass, null);
     }
 
     /**
      * 标准统一递归遍历出参
      */
-    private static BaseParams getOutputParams(JavaClass javaClass, JavaField javaField) {
+    private static BaseParams commonGetParams(JavaClass javaClass, JavaField javaField) {
         BaseParams result;
         String fullName = javaClass.getFullyQualifiedName();
 
@@ -158,7 +160,7 @@ public class ApiDocHelper {
                         //排除序列化id属性
                         continue;
                     }
-                    result.addChild(getOutputParams(field.getType(), field));
+                    result.addChild(commonGetParams(field.getType(), field));
                 }
                 return result;
             }
@@ -177,7 +179,7 @@ public class ApiDocHelper {
                 if (field.isStatic()) {
                     continue;
                 }
-                result.addChild(getOutputParams(field.getType(), field));
+                result.addChild(commonGetParams(field.getType(), field));
             }
             return result;
         }

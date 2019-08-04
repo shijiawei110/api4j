@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -16,15 +15,18 @@ import java.util.List;
 @Data
 public class ApiTagClass {
 
+    private String controllerName;
+
     private String path;
 
     private String note;
 
     private List<ApiTagMethod> methods = Lists.newArrayList();
 
-    public ApiTagClass(String path, String note) {
+    public ApiTagClass(String path, String note, String controllerName) {
         this.path = path;
         this.note = note;
+        this.controllerName = controllerName;
     }
 
     public void addMethods(ApiTagMethod apiTagMethod) {

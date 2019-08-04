@@ -44,6 +44,12 @@ public class AnnotationHelper {
     private static final String JACKSON_JSONPROPERTY = "com.fasterxml.jackson.annotation.JsonProperty";
     private static final String JACKSON_JSONPROPERTY_VALUE = "value";
 
+    private static final String JAVAX_NOT_BLANK = "javax.validation.constraints.NotBlank";
+    private static final String JAVAX_NOT_NULL = "javax.validation.constraints.NotNull";
+    private static final String JAVAX_NOT_EMPTY = "javax.validation.constraints.NotEmpty";
+    private static final String HIBERNATE_NOT_BLANK = "org.hibernate.validator.constraints.NotBlank";
+    private static final String HIBERNATE_NOT_EMPTY = "org.hibernate.validator.constraints.NotEmpty";
+
 
     /**
      * 是否标记 apiTag
@@ -218,6 +224,13 @@ public class AnnotationHelper {
                 }
             }
         }
+        return true;
+    }
+
+    /**
+     * 自定义类参数是否必须
+     */
+    private static boolean resRequired(List<JavaAnnotation> javaAnnotations) {
         return true;
     }
 

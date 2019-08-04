@@ -1,10 +1,10 @@
 package controller;
 
 import com.sjw.api4j.annotation.ApiTag;
-import model.response.Book;
-import model.response.Movie;
 import model.request.ParamDemo;
 import model.response.BaseResponse;
+import model.response.Book;
+import model.response.Movie;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,17 +24,17 @@ public class SpringMvcController {
      * 这是mvc get test1 note.
      */
     @GetMapping("/getTest1")
-    @ApiTag(value = "这是mvc get test1", author = "sjw")
-    public Movie getTest1(String name, Integer id) {
+//    @ApiTag(value = "这是mvc get test1", author = "sjw")
+    public Movie getTest1(@RequestParam(value = "test_name", required = false) String name, Integer id) {
         return null;
     }
 
     /**
      * 这是mvc get test2 note.
      */
-    @GetMapping("getTest2")
-//    @ApiTag(value = "这是mvc get test2", author = "sjw")
-    public List<Book> getTest2(@RequestParam(value = "test_id", required = false) Integer id, String name, HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping("getTest2")
+    @ApiTag(value = "这是mvc get test2", author = "sjw")
+    public List<Book> getTest2(ParamDemo paramDemo, HttpServletRequest request, HttpServletResponse response) {
 
         return null;
     }

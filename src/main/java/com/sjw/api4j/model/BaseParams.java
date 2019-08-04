@@ -17,8 +17,6 @@ import java.util.List;
 @Data
 public class BaseParams {
 
-    private static final String UNKNOWN_NAME = "[unknown]";
-
     /**
      * 本身是否是list
      **/
@@ -32,7 +30,7 @@ public class BaseParams {
     /**
      * 参数名
      */
-    private String name = UNKNOWN_NAME;
+    private String name = StringPool.EMPTY;
 
     /**
      * 参数描述
@@ -46,8 +44,11 @@ public class BaseParams {
 
     /**
      * 是否必须
+     * 1:String类型不能为empty
+     * 3:普通类型不能为null
+     * 3:如果是list类型 则list不能为空
      */
-    private boolean required = true;
+    private boolean required = false;
 
     /**
      * 长度
