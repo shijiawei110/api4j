@@ -6,7 +6,9 @@ import com.sjw.api4j.utils.StringPool;
 import com.sjw.api4j.utils.SysLogUtil;
 import com.thoughtworks.qdox.model.*;
 import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -87,7 +89,7 @@ public class ApiDocHelper {
             apiMethodInfo.setOutputParams(analyOutput(javaMethod));
             apiMethodInfos.add(apiMethodInfo);
         } catch (Exception e) {
-            SysLogUtil.info("分析方法 {0} 失败 -> msg = {1}", apiTagMethod.getJavaMethod().getName(), e.getMessage());
+            SysLogUtil.info("分析方法 {0} 失败 -> msg = {1} , stack ={2}", apiTagMethod.getJavaMethod().getName(), e.getMessage(), ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -105,7 +107,8 @@ public class ApiDocHelper {
                 //获取name
                 param.setName(getInputParamName(parameter));
                 //获取参数类型
-                param.setType(parameter.getFullyQualifiedName());
+                param.setType(parameter.getJavaClass().getFullyQualifiedName());
+                param.setTypeAbbr(parameter.getJavaClass().getName());
                 //get请求没有参数描述
                 param.setDesc(param.getName());
                 //查询是否必须
@@ -133,57 +136,69 @@ public class ApiDocHelper {
      */
     private static BaseParams commonGetParams(JavaClass javaClass, JavaField javaField) {
         BaseParams result;
+        JavaClass realClass = javaClass;
+        boolean isFx = false;
+        JavaClass fxClass = null;
         String fullName = javaClass.getFullyQualifiedName();
+        String abbrType = javaClass.getName();
 
         //判断java基本型
         if (ClassNameHelper.isJavaBaseType(fullName) || ClassNameHelper.isJavaLang(fullName)) {
-            result = BaseParams.newjavaType(fullName, getFieldName(javaField), getFieldComment(javaField));
+            result = BaseParams.newjavaType(fullName, abbrType, getFieldName(javaField), getFieldComment(javaField),
+                    getFieldIsMust(javaField), getLengthLimit(javaField));
             return result;
         }
 
         //判断是否为java.util集合类型
         if (ClassNameHelper.isJavaUtil(fullName)) {
             //取泛型实际类
-            JavaClass actualClass = (JavaClass) ((DefaultJavaParameterizedType) javaClass).getActualTypeArguments().get(0);
+            JavaClass actualClass = getFxClass(javaClass);
             String actualClassName = actualClass.getFullyQualifiedName();
+            String actualClassNameAbbr = actualClass.getName();
             if (ClassNameHelper.isJavaBaseType(actualClassName) || ClassNameHelper.isJavaLang(actualClassName)) {
-                result = BaseParams.newjavaTypeList(actualClassName, getFieldName(javaField), getFieldComment(javaField));
+                result = BaseParams.newjavaTypeList(actualClassName, actualClassNameAbbr, getFieldName(javaField),
+                        getFieldComment(javaField), getFieldIsMust(javaField), getLengthLimit(javaField));
                 return result;
             } else {
                 //为List<自定义类>
-                result = BaseParams.newCustomTypeList(actualClassName, getFieldName(javaField), getFieldComment(javaField));
-                result.setDesc(getFieldComment(javaField));
-                //对自定义类进行拆解递归分析
-                List<JavaField> fields = actualClass.getFields();
-                for (JavaField field : fields) {
-                    if (ClassNameHelper.isExcludeField(field.getName())) {
-                        //排除序列化id属性
-                        continue;
-                    }
-                    result.addChild(commonGetParams(field.getType(), field));
-                }
-                return result;
+                result = BaseParams.newCustomTypeList(actualClassName, actualClassNameAbbr, getFieldName(javaField),
+                        getFieldComment(javaField), getFieldIsMust(javaField), getLengthLimit(javaField));
+                realClass = actualClass;
             }
         } else {
-            //为自定义类
-            result = BaseParams.newCustomType(fullName, getFieldName(javaField), getFieldComment(javaField));
-            result.setDesc(getFieldComment(javaField));
-            //对自定义类进行拆解递归分析
-            List<JavaField> fields = javaClass.getFields();
-            for (JavaField field : fields) {
-                //排除序列化id属性
-                if (ClassNameHelper.isExcludeField(field.getName())) {
-                    continue;
-                }
-                //排除类变量
-                if (field.isStatic()) {
-                    continue;
-                }
-                result.addChild(commonGetParams(field.getType(), field));
+            //判断是否为泛型
+            JavaClass actualClass = getFxClass(javaClass);
+            if (null != actualClass) {
+                //为泛型自定义类
+                result = BaseParams.newFxType(fullName, abbrType, getFieldName(javaField),
+                        getFieldComment(javaField), getFieldIsMust(javaField), getLengthLimit(javaField));
+                isFx = true;
+                fxClass = actualClass;
+            } else {
+                //为非泛型自定义类
+                result = BaseParams.newCustomType(fullName, abbrType, getFieldName(javaField), getFieldComment(javaField),
+                        getFieldIsMust(javaField), getLengthLimit(javaField));
             }
-            return result;
         }
 
+        //对自定义类进行拆解递归分析
+        for (JavaField field : realClass.getFields()) {
+            //排除类变量
+            if (field.isStatic()) {
+                continue;
+            }
+            if (ClassNameHelper.isExcludeField(field.getName())) {
+                //排除序列化id属性
+                continue;
+            }
+            //如果是泛型类型,需要定位到泛型参数
+            if (isFx && isFxFidld(field)) {
+                result.addChild(commonGetParams(fxClass, field));
+                continue;
+            }
+            result.addChild(commonGetParams(field.getType(), field));
+        }
+        return result;
     }
 
 
@@ -227,11 +242,66 @@ public class ApiDocHelper {
     }
 
     /**
-     * 获取成员变量是否必须 todo:待完成
+     * 获取成员变量是否必须
      */
     private static boolean getFieldIsMust(JavaField javaField) {
         if (null == javaField) {
             return false;
+        }
+        return AnnotationHelper.paramRequired(javaField.getAnnotations());
+    }
+
+    /**
+     * 获取长度限制
+     * string -> @length
+     * number -> @max @min
+     * list -> @size
+     */
+    private static String getLengthLimit(JavaField javaField) {
+        if (null == javaField) {
+            return StringPool.EMPTY;
+        }
+        return AnnotationHelper.paramLengthLimit(javaField.getAnnotations());
+    }
+
+    /**
+     * 获取泛型类
+     */
+    private static JavaClass getFxClass(JavaClass javaClass) {
+        if (null == javaClass) {
+            return null;
+        }
+        List<JavaType> actualTypes = ((DefaultJavaParameterizedType) javaClass).getActualTypeArguments();
+        if (CollectionUtils.isEmpty(actualTypes)) {
+            return null;
+        }
+        JavaClass actualClass = (JavaClass) actualTypes.get(0);
+        return actualClass;
+    }
+
+    /**
+     * 判断是否为泛型 field
+     * 获取其class的type类型去匹配
+     */
+    private static boolean isFxFidld(JavaField javaField) {
+        if (null == javaField) {
+            return false;
+        }
+        JavaClass declarClass = javaField.getDeclaringClass();
+        if (null == declarClass) {
+            return false;
+        }
+        List<JavaTypeVariable<DefaultJavaParameterizedType>> defaultJavaParameterizedTypes = declarClass.getTypeParameters();
+        if (CollectionUtils.isEmpty(defaultJavaParameterizedTypes)) {
+            return false;
+        }
+        String fieldName = javaField.getType().getName();
+        String classFxName = defaultJavaParameterizedTypes.get(0).getName();
+        if (StringUtils.isBlank(fieldName) || StringUtils.isBlank(classFxName)) {
+            return false;
+        }
+        if (fieldName.equals(classFxName)) {
+            return true;
         }
         return false;
     }

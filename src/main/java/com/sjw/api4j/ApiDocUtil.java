@@ -2,8 +2,10 @@ package com.sjw.api4j;
 
 import com.sjw.api4j.conf.ApiDocConf;
 import com.sjw.api4j.helper.ApiDocHelper;
+import com.sjw.api4j.model.ApiMethodInfo;
 import com.sjw.api4j.model.ApiTagClass;
 import com.sjw.api4j.utils.SysLogUtil;
+import com.sjw.api4j.utils.print.ConsoleUtil;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
@@ -20,6 +22,7 @@ public class ApiDocUtil {
 
     public static void main(String[] args) {
         ApiDocConf apiDocConf = new ApiDocConf();
+        apiDocConf.setCommonPath("service");
         makeApiDoc(apiDocConf);
     }
 
@@ -44,10 +47,10 @@ public class ApiDocUtil {
             return;
         }
         //将包装method build成参数集
-        apiTagClassList.stream().forEach(ApiDocHelper::analyMethods);
-//        apiTagClassList.stream().forEach(p->{
-//            System.out.println(p.toString());
-//        });
+        for (ApiTagClass apiTagClass : apiTagClassList) {
+            List<ApiMethodInfo> apiMethodInfos = ApiDocHelper.analyMethods(apiTagClass);
+            ConsoleUtil.print(apiTagClass, apiMethodInfos);
+        }
 
         SysLogUtil.sysEnd(start);
     }

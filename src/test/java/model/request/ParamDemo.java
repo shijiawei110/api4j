@@ -2,12 +2,11 @@ package model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import model.response.Book;
 import model.response.Movie;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.util.List;
 
 /**
@@ -18,17 +17,28 @@ import java.util.List;
 @Data
 public class ParamDemo {
 
-    @Length(min = 1,max = 1000)
+    /**
+     * id
+     */
     @NotNull
     private Long id;
 
     @JsonProperty("test_id")
+    @Min(1)
+    @Max(5)
     private Long testId;
 
+    /**
+     * age
+     */
     @JsonProperty("test_age")
     private Integer testAge;
 
+    /**
+     * 名称
+     */
     @JsonProperty("test_name")
+    @Length(min = 1, max = 100)
     private String testName;
 
     @NotNull
@@ -38,9 +48,13 @@ public class ParamDemo {
     private String ok;
 
     @NotEmpty
+    @Size(min = 1, max = 10)
     private List<String> reqStrs;
 
-    private Movie movie;
+    /**
+     * 书籍实体类
+     */
+    private Book book;
 
-    private List<Movie> movies;
+//    private List<Movie> movies;
 }

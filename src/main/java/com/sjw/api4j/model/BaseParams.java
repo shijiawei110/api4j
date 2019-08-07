@@ -28,6 +28,11 @@ public class BaseParams {
     private boolean isJavaType = true;
 
     /**
+     * 是否为泛型
+     */
+    private boolean isFx = false;
+
+    /**
      * 参数名
      */
     private String name = StringPool.EMPTY;
@@ -41,6 +46,11 @@ public class BaseParams {
      * 参数类型
      */
     private String type = StringPool.EMPTY;
+
+    /**
+     * 参数类型缩写
+     */
+    private String typeAbbr = StringPool.EMPTY;
 
     /**
      * 是否必须
@@ -65,16 +75,16 @@ public class BaseParams {
     /**
      * 设置基础类型
      */
-    public static BaseParams newjavaType(String type, String name, String desc) {
-        BaseParams baseParams = newParam(type, name, desc);
+    public static BaseParams newjavaType(String type, String abbrType, String name, String desc, boolean required, String length) {
+        BaseParams baseParams = newParam(type, abbrType, name, desc, required, length);
         return baseParams;
     }
 
     /**
      * 设置List基础类型
      */
-    public static BaseParams newjavaTypeList(String type, String name, String desc) {
-        BaseParams baseParams = newParam(type, name, desc);
+    public static BaseParams newjavaTypeList(String type, String abbrType, String name, String desc, boolean required, String length) {
+        BaseParams baseParams = newParam(type, abbrType, name, desc, required, length);
         baseParams.setArray(true);
         return baseParams;
     }
@@ -82,8 +92,8 @@ public class BaseParams {
     /**
      * 设置自定义类型信息
      */
-    public static BaseParams newCustomType(String type, String name, String desc) {
-        BaseParams baseParams = newParam(type, name, desc);
+    public static BaseParams newCustomType(String type, String abbrType, String name, String desc, boolean required, String length) {
+        BaseParams baseParams = newParam(type, abbrType, name, desc, required, length);
         baseParams.setJavaType(false);
         return baseParams;
     }
@@ -91,14 +101,24 @@ public class BaseParams {
     /**
      * 设置自定义List类型信息
      */
-    public static BaseParams newCustomTypeList(String type, String name, String desc) {
-        BaseParams baseParams = newParam(type, name, desc);
+    public static BaseParams newCustomTypeList(String type, String abbrType, String name, String desc, boolean required, String length) {
+        BaseParams baseParams = newParam(type, abbrType, name, desc, required, length);
         baseParams.setJavaType(false);
         baseParams.setArray(true);
         return baseParams;
     }
 
-    private static BaseParams newParam(String type, String name, String desc) {
+    /**
+     * 设置为泛型类型
+     */
+    public static BaseParams newFxType(String type, String abbrType, String name, String desc, boolean required, String length) {
+        BaseParams baseParams = newParam(type, abbrType, name, desc, required, length);
+        baseParams.setFx(true);
+        baseParams.setJavaType(false);
+        return baseParams;
+    }
+
+    private static BaseParams newParam(String type, String abbrType, String name, String desc, boolean required, String length) {
         BaseParams baseParams = new BaseParams();
         if (StringUtils.isNotBlank(name)) {
             baseParams.setName(name);
@@ -106,8 +126,15 @@ public class BaseParams {
         if (StringUtils.isNotBlank(type)) {
             baseParams.setType(type);
         }
+        if (StringUtils.isNotBlank(abbrType)) {
+            baseParams.setTypeAbbr(abbrType);
+        }
         if (StringUtils.isNotBlank(desc)) {
             baseParams.setDesc(desc);
+        }
+        baseParams.setRequired(required);
+        if (StringUtils.isNotBlank(length)) {
+            baseParams.setLength(length);
         }
         return baseParams;
     }

@@ -75,11 +75,17 @@ public class ClassNameHelper {
     }
 
     public static boolean isJavaLang(String className) {
+        if (className.length() < 10) {
+            return false;
+        }
         className = className.substring(0, 10);
         return !StringUtils.isBlank(className) && JAVA_LANG_PATH.equals(className);
     }
 
     public static boolean isJavaUtil(String className) {
+        if (className.length() < 10) {
+            return false;
+        }
         className = className.substring(0, 10);
         return !StringUtils.isBlank(className) && JAVA_COLLECTION_PATH.equals(className);
     }

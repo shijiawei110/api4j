@@ -49,6 +49,22 @@ public class AnnotationHelper {
     private static final String JAVAX_NOT_EMPTY = "javax.validation.constraints.NotEmpty";
     private static final String HIBERNATE_NOT_BLANK = "org.hibernate.validator.constraints.NotBlank";
     private static final String HIBERNATE_NOT_EMPTY = "org.hibernate.validator.constraints.NotEmpty";
+    private static final String COM_NOT_BLANK = "NotBlank";
+    private static final String COM_NOT_NULL = "NotNull";
+    private static final String COM_NOT_EMPTY = "NotEmpty";
+
+    private static final String JAVAX_MAX = "javax.validation.constraints.Max";
+    private static final String JAVAX_MIN = "javax.validation.constraints.Min";
+    private static final String JAVAX_SIZE = "javax.validation.constraints.Size";
+    private static final String COM_MAX = "Max";
+    private static final String COM_MIN = "Min";
+    private static final String COM_SIZE = "Size";
+    private static final String HIBERNATE_LENGTH = "org.hibernate.validator.constraints.Length";
+    private static final String JAVAX_MAX_MIN_VALUE = "value";
+    private static final String JAVAX_SIZE_MIN = "min";
+    private static final String JAVAX_SIZE_MAX = "max";
+    private static final String HIBERNATE_LENGTH_MIN = "min";
+    private static final String HIBERNATE_LENGTH_MAX = "max";
 
 
     /**
@@ -230,8 +246,91 @@ public class AnnotationHelper {
     /**
      * 自定义类参数是否必须
      */
-    private static boolean resRequired(List<JavaAnnotation> javaAnnotations) {
-        return true;
+    public static boolean paramRequired(List<JavaAnnotation> javaAnnotations) {
+        if (CollectionUtils.isEmpty(javaAnnotations)) {
+            return false;
+        }
+        for (JavaAnnotation javaAnnotation : javaAnnotations) {
+
+            if (isPointAnn(javaAnnotation, JAVAX_NOT_BLANK) || isPointAnn(javaAnnotation, COM_NOT_BLANK)) {
+                return true;
+            }
+            if (isPointAnn(javaAnnotation, JAVAX_NOT_EMPTY) || isPointAnn(javaAnnotation, COM_NOT_EMPTY)) {
+                return true;
+            }
+            if (isPointAnn(javaAnnotation, JAVAX_NOT_NULL) || isPointAnn(javaAnnotation, COM_NOT_NULL)) {
+                return true;
+            }
+            if (isPointAnn(javaAnnotation, HIBERNATE_NOT_BLANK)) {
+                return true;
+            }
+            if (isPointAnn(javaAnnotation, HIBERNATE_NOT_EMPTY)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 自定义类参数长度限制
+     */
+    public static String paramLengthLimit(List<JavaAnnotation> javaAnnotations) {
+        StringBuilder result = new StringBuilder(StringPool.EMPTY);
+        if (CollectionUtils.isEmpty(javaAnnotations)) {
+            return result.toString();
+        }
+        for (JavaAnnotation javaAnnotation : javaAnnotations) {
+            if (isPointAnn(javaAnnotation, JAVAX_MIN) || isPointAnn(javaAnnotation, COM_MIN)) {
+                String min = getAnnoParamValue(javaAnnotation, JAVAX_MAX_MIN_VALUE);
+                if (StringUtils.isNotBlank(min)) {
+                    result.append("min-val:");
+                    result.append(min);
+                    result.append(StringPool.SPACE);
+                }
+            }
+            if (isPointAnn(javaAnnotation, JAVAX_MAX) || isPointAnn(javaAnnotation, COM_MAX)) {
+                String max = getAnnoParamValue(javaAnnotation, JAVAX_MAX_MIN_VALUE);
+                if (StringUtils.isNotBlank(max)) {
+                    result.append("max-val:");
+                    result.append(max);
+                    result.append(StringPool.SPACE);
+                }
+            }
+
+            if (isPointAnn(javaAnnotation, JAVAX_SIZE) || isPointAnn(javaAnnotation, COM_SIZE)) {
+                String min = getAnnoParamValue(javaAnnotation, JAVAX_SIZE_MIN);
+                String max = getAnnoParamValue(javaAnnotation, JAVAX_SIZE_MAX);
+                if (StringUtils.isNotBlank(min)) {
+                    result.append("min-size:");
+                    result.append(min);
+                    result.append(StringPool.SPACE);
+                }
+                if (StringUtils.isNotBlank(max)) {
+                    result.append("max-size:");
+                    result.append(max);
+                    result.append(StringPool.SPACE);
+                }
+                return result.toString();
+            }
+
+            if (isPointAnn(javaAnnotation, HIBERNATE_LENGTH)) {
+                String min = getAnnoParamValue(javaAnnotation, HIBERNATE_LENGTH_MIN);
+                String max = getAnnoParamValue(javaAnnotation, HIBERNATE_LENGTH_MAX);
+                if (StringUtils.isNotBlank(min)) {
+                    result.append("min-len:");
+                    result.append(min);
+                    result.append(StringPool.SPACE);
+                }
+                if (StringUtils.isNotBlank(max)) {
+                    result.append("max-len:");
+                    result.append(max);
+                    result.append(StringPool.SPACE);
+                }
+                return result.toString();
+            }
+
+        }
+        return result.toString();
     }
 
 

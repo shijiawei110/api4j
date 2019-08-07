@@ -1,5 +1,6 @@
 package com.sjw.api4j.conf;
 
+import com.sjw.api4j.enums.ApiDocPrintTypeEnum;
 import lombok.Data;
 
 /**
@@ -15,7 +16,7 @@ public class ApiDocConf {
      */
     private String commonPath;
     /**
-     * 生成文档还是输出到控制台
+     * 生成文档方式
      */
-    private boolean isOutPutDoc = false;
+    private ApiDocPrintTypeEnum apiDocPrintTypeEnum;
 }
