@@ -50,16 +50,10 @@ public class AnnotationHelper {
     private static final String JAVAX_NOT_EMPTY = "javax.validation.constraints.NotEmpty";
     private static final String HIBERNATE_NOT_BLANK = "org.hibernate.validator.constraints.NotBlank";
     private static final String HIBERNATE_NOT_EMPTY = "org.hibernate.validator.constraints.NotEmpty";
-    private static final String COM_NOT_BLANK = "NotBlank";
-    private static final String COM_NOT_NULL = "NotNull";
-    private static final String COM_NOT_EMPTY = "NotEmpty";
 
     private static final String JAVAX_MAX = "javax.validation.constraints.Max";
     private static final String JAVAX_MIN = "javax.validation.constraints.Min";
     private static final String JAVAX_SIZE = "javax.validation.constraints.Size";
-    private static final String COM_MAX = "Max";
-    private static final String COM_MIN = "Min";
-    private static final String COM_SIZE = "Size";
     private static final String HIBERNATE_LENGTH = "org.hibernate.validator.constraints.Length";
     private static final String JAVAX_MAX_MIN_VALUE = "value";
     private static final String JAVAX_SIZE_MIN = "min";
@@ -253,13 +247,13 @@ public class AnnotationHelper {
         }
         for (JavaAnnotation javaAnnotation : javaAnnotations) {
 
-            if (isPointAnn(javaAnnotation, JAVAX_NOT_BLANK) || isPointAnn(javaAnnotation, COM_NOT_BLANK)) {
+            if (isPointAnn(javaAnnotation, JAVAX_NOT_BLANK)) {
                 return true;
             }
-            if (isPointAnn(javaAnnotation, JAVAX_NOT_EMPTY) || isPointAnn(javaAnnotation, COM_NOT_EMPTY)) {
+            if (isPointAnn(javaAnnotation, JAVAX_NOT_EMPTY)) {
                 return true;
             }
-            if (isPointAnn(javaAnnotation, JAVAX_NOT_NULL) || isPointAnn(javaAnnotation, COM_NOT_NULL)) {
+            if (isPointAnn(javaAnnotation, JAVAX_NOT_NULL)) {
                 return true;
             }
             if (isPointAnn(javaAnnotation, HIBERNATE_NOT_BLANK)) {
@@ -282,7 +276,7 @@ public class AnnotationHelper {
             return null;
         }
         for (JavaAnnotation javaAnnotation : javaAnnotations) {
-            if (isPointAnn(javaAnnotation, JAVAX_MIN) || isPointAnn(javaAnnotation, COM_MIN)) {
+            if (isPointAnn(javaAnnotation, JAVAX_MIN)) {
                 String min = getAnnoParamValue(javaAnnotation, JAVAX_MAX_MIN_VALUE);
                 if (StringUtils.isNotBlank(min)) {
                     pojo.setMin(Integer.parseInt(min));
@@ -291,7 +285,7 @@ public class AnnotationHelper {
                     result.append(StringPool.SPACE);
                 }
             }
-            if (isPointAnn(javaAnnotation, JAVAX_MAX) || isPointAnn(javaAnnotation, COM_MAX)) {
+            if (isPointAnn(javaAnnotation, JAVAX_MAX)) {
                 String max = getAnnoParamValue(javaAnnotation, JAVAX_MAX_MIN_VALUE);
                 if (StringUtils.isNotBlank(max)) {
                     pojo.setMax(Integer.parseInt(max));
@@ -301,7 +295,7 @@ public class AnnotationHelper {
                 }
             }
 
-            if (isPointAnn(javaAnnotation, JAVAX_SIZE) || isPointAnn(javaAnnotation, COM_SIZE)) {
+            if (isPointAnn(javaAnnotation, JAVAX_SIZE)) {
                 String min = getAnnoParamValue(javaAnnotation, JAVAX_SIZE_MIN);
                 String max = getAnnoParamValue(javaAnnotation, JAVAX_SIZE_MAX);
                 if (StringUtils.isNotBlank(min)) {
@@ -367,6 +361,19 @@ public class AnnotationHelper {
             return false;
         }
         if (target.equalsIgnoreCase(name)) {
+            return true;
+        }
+        //万一获取不到全名的问题
+        String[] targetSplit = target.split("\\.");
+        int size = targetSplit.length;
+        if (size <= 0) {
+            return false;
+        }
+        String lastName = targetSplit[size - 1];
+        if (StringUtils.isBlank(lastName)) {
+            return false;
+        }
+        if (lastName.equals(name)) {
             return true;
         }
         return false;

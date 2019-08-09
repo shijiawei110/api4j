@@ -24,7 +24,7 @@ public class SpringMvcController {
      * 这是mvc get test1 note.
      */
     @GetMapping("/getTest1")
-    @ApiTag(value = "这是mvc get test1")
+    @ApiTag(value = "这是mvc get test1" ,author = "shijiawei")
     public Book getTest1(@RequestParam(value = "test_name", required = false) String name, Integer id) {
         return null;
     }
@@ -33,7 +33,7 @@ public class SpringMvcController {
      * 这是mvc get test2 note.
      */
     @PostMapping("getTest2")
-    @ApiTag(value = "这是mvc get test2", author = "sjw")
+//    @ApiTag(value = "这是mvc get test2", author = "sjw")
     public Movie getTest2(List<ParamDemo> paramDemos, HttpServletRequest request, HttpServletResponse response) {
         return null;
     }

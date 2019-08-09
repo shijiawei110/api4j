@@ -1,5 +1,6 @@
 package com.sjw.api4j.utils.print;
 
+import com.sjw.api4j.helper.JsonMockHelper;
 import com.sjw.api4j.model.ApiMethodInfo;
 import com.sjw.api4j.model.ApiTagClass;
 import com.sjw.api4j.model.BaseParams;
@@ -40,15 +41,25 @@ public class ConsoleUtil {
         SysLogUtil.apiParamKv("接口注释", apiMethodInfo.getNote());
         SysLogUtil.apiParamKv("接口标注", apiMethodInfo.getTagValue());
         SysLogUtil.ln();
+        BaseParams input = apiMethodInfo.getInputParams();
+        BaseParams output = apiMethodInfo.getOutputParams();
         //input params
-        printConsoleInput(apiMethodInfo.getInputParams(), apiMethodInfo.getHttpTypeEnum().isGet());
+        printConsoleInput(input, apiMethodInfo.getHttpTypeEnum().isGet());
         //output params
         printConsoleOutput(apiMethodInfo.getOutputParams());
-        //input json demo todo
-        if (!apiMethodInfo.getHttpTypeEnum().isGet()) {
-
+        //input json demo -> post请求才有
+        if (JsonMockHelper.isNeedJsonInput(apiMethodInfo.getHttpTypeEnum().isGet(), input)) {
+            SysLogUtil.reqDemo();
+            SysLogUtil.infoNoLn(JsonMockHelper.makeMockJson(input));
+            SysLogUtil.ln();
         }
-        //output json demo todo
+        //output json demo  -> 返回为pojo或者 list<pojo>
+        if (JsonMockHelper.isNeedJsonOutput(output)) {
+            SysLogUtil.resDemo();
+            SysLogUtil.infoNoLn(JsonMockHelper.makeMockJson(output));
+            SysLogUtil.ln();
+        }
+
 
     }
 

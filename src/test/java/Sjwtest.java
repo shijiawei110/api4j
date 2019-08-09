@@ -1,13 +1,4 @@
-import com.github.javafaker.Faker;
-import com.sjw.api4j.enums.HttpTypeEnum;
-import com.sjw.api4j.helper.FileHelper;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import com.alibaba.fastjson.JSONArray;
 
 /**
  * Created by shijiawei on 2019/4/1.
@@ -17,9 +8,16 @@ public class Sjwtest {
 
     public static void main(String[] args) {
 //        Faker faker = new Faker(new Locale("zh-CN"));
-        Faker faker = new Faker();
-        System.out.println(faker.name().name());
-        System.out.println(faker.number().numberBetween(0,0));
+        model.response.Book book = new model.response.Book();
+        book.setBookId(1);
+        book.setBookName("aaa");
+        model.response.Book book2 = new model.response.Book();
+        book2.setBookId(2);
+        book2.setBookName("bbb");
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(book);
+        jsonArray.add(book2);
+        System.out.println(jsonArray.toJSONString());
 
     }
 

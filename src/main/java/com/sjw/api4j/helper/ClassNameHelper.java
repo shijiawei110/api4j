@@ -19,6 +19,14 @@ public class ClassNameHelper {
     private static final String JAVA_COLLECTION_PATH = "java.util.";
     private static final String JAVA_LANG_PATH = "java.lang.";
 
+    private static final String JAVA_LANG_STRING = "String";
+    private static final String JAVA_INTEGER = "Integer";
+    private static final String JAVA_INTEGER_BASE = "int";
+    private static final String JAVA_LONG = "Long";
+    private static final String JAVA_LONG_BASE = "long";
+    private static final String JAVA_BOOL = "Boolean";
+    private static final String JAVA_BOOL_BASE = "boolean";
+
 
     private static Set<String> EXCLUDE_INPUT_PARAM = Sets.newHashSet();
 
@@ -92,6 +100,23 @@ public class ClassNameHelper {
 
     public static boolean isExcludeField(String fieldName) {
         return !StringUtils.isBlank(fieldName) && EXCLUDE_FIELD_NAME.contains(fieldName);
+    }
+
+
+    public static boolean isString(String typeName) {
+        return !StringUtils.isBlank(typeName) && typeName.contains(JAVA_LANG_STRING);
+    }
+
+    public static boolean isInt(String typeName) {
+        return !StringUtils.isBlank(typeName) && (typeName.contains(JAVA_INTEGER) || typeName.contains(JAVA_INTEGER_BASE));
+    }
+
+    public static boolean isLong(String typeName) {
+        return !StringUtils.isBlank(typeName) && (typeName.contains(JAVA_LONG) || typeName.contains(JAVA_LONG_BASE));
+    }
+
+    public static boolean isBool(String typeName) {
+        return !StringUtils.isBlank(typeName) && (typeName.contains(JAVA_BOOL) || typeName.contains(JAVA_BOOL_BASE));
     }
 
 }
