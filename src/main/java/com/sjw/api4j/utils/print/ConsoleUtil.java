@@ -45,7 +45,9 @@ public class ConsoleUtil {
         //output params
         printConsoleOutput(apiMethodInfo.getOutputParams());
         //input json demo todo
+        if (!apiMethodInfo.getHttpTypeEnum().isGet()) {
 
+        }
         //output json demo todo
 
     }

@@ -257,9 +257,9 @@ public class ApiDocHelper {
      * number -> @max @min
      * list -> @size
      */
-    private static String getLengthLimit(JavaField javaField) {
+    private static LengthLimitInfoPojo getLengthLimit(JavaField javaField) {
         if (null == javaField) {
-            return StringPool.EMPTY;
+            return null;
         }
         return AnnotationHelper.paramLengthLimit(javaField.getAnnotations());
     }

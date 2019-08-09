@@ -3,6 +3,7 @@ package com.sjw.api4j.helper;
 import com.sjw.api4j.enums.ApiTagParamsEnum;
 import com.sjw.api4j.enums.HttpTypeEnum;
 import com.sjw.api4j.model.ApiTagPojo;
+import com.sjw.api4j.model.LengthLimitInfoPojo;
 import com.sjw.api4j.utils.StringPool;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -274,15 +275,17 @@ public class AnnotationHelper {
     /**
      * 自定义类参数长度限制
      */
-    public static String paramLengthLimit(List<JavaAnnotation> javaAnnotations) {
+    public static LengthLimitInfoPojo paramLengthLimit(List<JavaAnnotation> javaAnnotations) {
         StringBuilder result = new StringBuilder(StringPool.EMPTY);
+        LengthLimitInfoPojo pojo = new LengthLimitInfoPojo();
         if (CollectionUtils.isEmpty(javaAnnotations)) {
-            return result.toString();
+            return null;
         }
         for (JavaAnnotation javaAnnotation : javaAnnotations) {
             if (isPointAnn(javaAnnotation, JAVAX_MIN) || isPointAnn(javaAnnotation, COM_MIN)) {
                 String min = getAnnoParamValue(javaAnnotation, JAVAX_MAX_MIN_VALUE);
                 if (StringUtils.isNotBlank(min)) {
+                    pojo.setMin(Integer.parseInt(min));
                     result.append("min-val:");
                     result.append(min);
                     result.append(StringPool.SPACE);
@@ -291,6 +294,7 @@ public class AnnotationHelper {
             if (isPointAnn(javaAnnotation, JAVAX_MAX) || isPointAnn(javaAnnotation, COM_MAX)) {
                 String max = getAnnoParamValue(javaAnnotation, JAVAX_MAX_MIN_VALUE);
                 if (StringUtils.isNotBlank(max)) {
+                    pojo.setMax(Integer.parseInt(max));
                     result.append("max-val:");
                     result.append(max);
                     result.append(StringPool.SPACE);
@@ -301,36 +305,42 @@ public class AnnotationHelper {
                 String min = getAnnoParamValue(javaAnnotation, JAVAX_SIZE_MIN);
                 String max = getAnnoParamValue(javaAnnotation, JAVAX_SIZE_MAX);
                 if (StringUtils.isNotBlank(min)) {
+                    pojo.setMin(Integer.parseInt(min));
                     result.append("min-size:");
                     result.append(min);
                     result.append(StringPool.SPACE);
                 }
                 if (StringUtils.isNotBlank(max)) {
+                    pojo.setMax(Integer.parseInt(max));
                     result.append("max-size:");
                     result.append(max);
                     result.append(StringPool.SPACE);
                 }
-                return result.toString();
+                pojo.setLimitStr(result.toString());
+                return pojo;
             }
 
             if (isPointAnn(javaAnnotation, HIBERNATE_LENGTH)) {
                 String min = getAnnoParamValue(javaAnnotation, HIBERNATE_LENGTH_MIN);
                 String max = getAnnoParamValue(javaAnnotation, HIBERNATE_LENGTH_MAX);
                 if (StringUtils.isNotBlank(min)) {
+                    pojo.setMin(Integer.parseInt(min));
                     result.append("min-len:");
                     result.append(min);
                     result.append(StringPool.SPACE);
                 }
                 if (StringUtils.isNotBlank(max)) {
+                    pojo.setMax(Integer.parseInt(max));
                     result.append("max-len:");
                     result.append(max);
                     result.append(StringPool.SPACE);
                 }
-                return result.toString();
+                pojo.setLimitStr(result.toString());
+                return pojo;
             }
-
         }
-        return result.toString();
+        pojo.setLimitStr(result.toString());
+        return pojo;
     }
 
 

@@ -65,6 +65,12 @@ public class BaseParams {
      */
     private String length = StringPool.EMPTY;
 
+    /**
+     * 长度参数(json mock使用)
+     */
+    private int minLimit = -1;
+    private int maxLimit = -1;
+
 
     /**
      * 子参数集 (只有在是java自定义类型的时候才有)
@@ -75,7 +81,7 @@ public class BaseParams {
     /**
      * 设置基础类型
      */
-    public static BaseParams newjavaType(String type, String abbrType, String name, String desc, boolean required, String length) {
+    public static BaseParams newjavaType(String type, String abbrType, String name, String desc, boolean required, LengthLimitInfoPojo length) {
         BaseParams baseParams = newParam(type, abbrType, name, desc, required, length);
         return baseParams;
     }
@@ -83,7 +89,7 @@ public class BaseParams {
     /**
      * 设置List基础类型
      */
-    public static BaseParams newjavaTypeList(String type, String abbrType, String name, String desc, boolean required, String length) {
+    public static BaseParams newjavaTypeList(String type, String abbrType, String name, String desc, boolean required, LengthLimitInfoPojo length) {
         BaseParams baseParams = newParam(type, abbrType, name, desc, required, length);
         baseParams.setArray(true);
         return baseParams;
@@ -92,7 +98,7 @@ public class BaseParams {
     /**
      * 设置自定义类型信息
      */
-    public static BaseParams newCustomType(String type, String abbrType, String name, String desc, boolean required, String length) {
+    public static BaseParams newCustomType(String type, String abbrType, String name, String desc, boolean required, LengthLimitInfoPojo length) {
         BaseParams baseParams = newParam(type, abbrType, name, desc, required, length);
         baseParams.setJavaType(false);
         return baseParams;
@@ -101,7 +107,7 @@ public class BaseParams {
     /**
      * 设置自定义List类型信息
      */
-    public static BaseParams newCustomTypeList(String type, String abbrType, String name, String desc, boolean required, String length) {
+    public static BaseParams newCustomTypeList(String type, String abbrType, String name, String desc, boolean required, LengthLimitInfoPojo length) {
         BaseParams baseParams = newParam(type, abbrType, name, desc, required, length);
         baseParams.setJavaType(false);
         baseParams.setArray(true);
@@ -111,14 +117,14 @@ public class BaseParams {
     /**
      * 设置为泛型类型
      */
-    public static BaseParams newFxType(String type, String abbrType, String name, String desc, boolean required, String length) {
+    public static BaseParams newFxType(String type, String abbrType, String name, String desc, boolean required, LengthLimitInfoPojo length) {
         BaseParams baseParams = newParam(type, abbrType, name, desc, required, length);
         baseParams.setFx(true);
         baseParams.setJavaType(false);
         return baseParams;
     }
 
-    private static BaseParams newParam(String type, String abbrType, String name, String desc, boolean required, String length) {
+    private static BaseParams newParam(String type, String abbrType, String name, String desc, boolean required, LengthLimitInfoPojo length) {
         BaseParams baseParams = new BaseParams();
         if (StringUtils.isNotBlank(name)) {
             baseParams.setName(name);
@@ -133,8 +139,10 @@ public class BaseParams {
             baseParams.setDesc(desc);
         }
         baseParams.setRequired(required);
-        if (StringUtils.isNotBlank(length)) {
-            baseParams.setLength(length);
+        if (null != length) {
+            baseParams.setLength(length.getLimitStr());
+            baseParams.setMinLimit(length.getMin());
+            baseParams.setMaxLimit(length.getMax());
         }
         return baseParams;
     }
