@@ -1,8 +1,12 @@
 package controller;
 
+import com.sjw.api4j.annotation.ApiTag;
+import com.sjw.api4j.enums.ProtocolEnum;
+import model.request.ParamDemo;
 import model.response.Movie;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import java.util.List;
@@ -14,7 +18,7 @@ import java.util.List;
  * 这是dubbo controller class的注解
  */
 @Path("dubbo-controller")
-//@ApiTag(value = "kkkk", protocol = ProtocolEnum.DUBBO)
+@ApiTag(value = "kkkk", protocol = ProtocolEnum.DUBBO)
 public interface DubboController {
 
     /**
@@ -24,7 +28,7 @@ public interface DubboController {
      */
     @GET
     @Path("/getTest")
-    List<Movie> getTest(@QueryParam("test_id") Integer testId, String testName);
+    Movie getTest(@QueryParam("test_id") Integer testId, String testName);
 
 
 //    /**
@@ -37,7 +41,7 @@ public interface DubboController {
 //    List<String> getTest2(@QueryParam("test_id") Integer id);
 
 
-//    @POST
-//    @Path("postTest1")
-//    List<model.response.Movie> postTest1(model.request.ParamDemo paramDemo);
+    @POST
+    @Path("postTest1")
+    List<Movie> postTest1(ParamDemo paramDemo);
 }

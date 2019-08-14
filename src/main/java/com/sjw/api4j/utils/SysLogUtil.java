@@ -102,12 +102,12 @@ public class SysLogUtil {
     }
 
     public static void reqDemo() {
-        System.out.println("【请求实例】");
+        System.out.println("【请求示例】");
         System.out.println();
     }
 
     public static void resDemo() {
-        System.out.println("【返回实例】");
+        System.out.println("【返回示例】");
         System.out.println();
     }
 }

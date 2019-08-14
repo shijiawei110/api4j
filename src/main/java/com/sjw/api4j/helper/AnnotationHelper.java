@@ -101,10 +101,10 @@ public class AnnotationHelper {
         String classPath = StringPool.EMPTY;
         List<JavaAnnotation> annos = javaClass.getAnnotations();
         for (JavaAnnotation p : annos) {
-            if (WS_RS_PATH.equalsIgnoreCase(getAnnoClassName(p))) {
+            if (isPointAnn(p, WS_RS_PATH)) {
                 classPath = getAnnoParamValue(p, WS_RS_PATH_VALUE);
             }
-            if (MVC_PATH.equalsIgnoreCase(getAnnoClassName(p))) {
+            if (isPointAnn(p, MVC_PATH)) {
                 classPath = getAnnoParamValue(p, MVC_PATH_VALUE);
             }
         }
