@@ -3,6 +3,7 @@ package controller;
 import com.sjw.api4j.annotation.ApiTag;
 import com.sjw.api4j.enums.ProtocolEnum;
 import model.request.ParamDemo;
+import model.response.BaseResponse;
 import model.response.Movie;
 
 import javax.ws.rs.GET;
@@ -18,7 +19,7 @@ import java.util.List;
  * 这是dubbo controller class的注解
  */
 @Path("dubbo-controller")
-@ApiTag(value = "kkkk", protocol = ProtocolEnum.DUBBO)
+//@ApiTag(value = "kkkk", protocol = ProtocolEnum.DUBBO)
 public interface DubboController {
 
     /**
@@ -26,9 +27,9 @@ public interface DubboController {
      *
      * @return
      */
-    @GET
-    @Path("/getTest")
-    Movie getTest(@QueryParam("test_id") Integer testId, String testName);
+//    @GET
+//    @Path("/getTest")
+//    Movie getTest(@QueryParam("test_id") Integer testId, String testName);
 
 
 //    /**
@@ -43,5 +44,5 @@ public interface DubboController {
 
     @POST
     @Path("postTest1")
-    List<Movie> postTest1(ParamDemo paramDemo);
+    BaseResponse<Movie> postTest1(ParamDemo paramDemo);
 }

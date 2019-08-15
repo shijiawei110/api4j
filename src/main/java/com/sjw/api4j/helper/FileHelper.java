@@ -21,6 +21,7 @@ public class FileHelper {
         return System.getProperty("user.dir");
     }
 
+
     public static Collection<JavaClass> getAllClassses(String... paths) {
         JavaProjectBuilder javaProjectBuilder = new JavaProjectBuilder();
         javaProjectBuilder.setEncoding(StringPool.UTF_8);

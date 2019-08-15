@@ -13,6 +13,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Data
 public class ApiMethodInfo {
     private String author;
+    private String name;
     private String note;
     private String tagValue;
     private HttpTypeEnum httpTypeEnum;
@@ -25,6 +26,7 @@ public class ApiMethodInfo {
         this.author = apiTagMethod.getAuthor();
         this.note = apiTagMethod.getNote();
         this.tagValue = apiTagMethod.getTagValue();
+        this.name = apiTagMethod.getName();
     }
 
     @Override

@@ -88,6 +88,7 @@ public class AnnotationHelper {
             apiTagPojo.setValue(getAnnoParamValue(annotation, ApiTagParamsEnum.VALUE.getValue()));
             apiTagPojo.setProtocol(getAnnoParamValue(annotation, ApiTagParamsEnum.PROTOCOL.getValue()));
             apiTagPojo.setAuthor(getAnnoParamValue(annotation, ApiTagParamsEnum.AUTHOR.getValue()));
+            apiTagPojo.setName(getAnnoParamValue(annotation, ApiTagParamsEnum.NAME.getValue()));
             return apiTagPojo;
         }
         return null;
@@ -364,7 +365,7 @@ public class AnnotationHelper {
             return true;
         }
         //万一获取不到全名的问题
-        String[] targetSplit = target.split("\\.");
+        String[] targetSplit = target.split(StringPool.REAL_DOT);
         int size = targetSplit.length;
         if (size <= 0) {
             return false;

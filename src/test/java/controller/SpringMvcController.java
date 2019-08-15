@@ -3,7 +3,6 @@ package controller;
 import com.sjw.api4j.annotation.ApiTag;
 import model.request.ParamDemo;
 import model.response.BaseResponse;
-import model.response.Book;
 import model.response.Movie;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +22,8 @@ public class SpringMvcController {
     /**
      * 这是mvc get test1 note.
      */
-    @GetMapping("/getTest1")
-//    @ApiTag(value = "这是mvc get test1" ,author = "shijiawei")
+    @GetMapping("/test1")
+    @ApiTag(name = "mvc测试接口", value = "这是mvc get test1", author = "shijiawei")
     public Movie getTest1(@RequestParam(value = "test_name", required = false) String name, Integer id) {
         return null;
     }

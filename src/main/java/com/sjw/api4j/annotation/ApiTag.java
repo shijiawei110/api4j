@@ -22,6 +22,8 @@ public @interface ApiTag {
 
     String value() default StringPool.EMPTY;
 
+    String name() default StringPool.EMPTY;
+
     String author() default StringPool.EMPTY;
 
     ProtocolEnum protocol() default ProtocolEnum.REST;

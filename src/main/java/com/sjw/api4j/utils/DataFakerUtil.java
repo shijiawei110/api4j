@@ -1,6 +1,7 @@
 package com.sjw.api4j.utils;
 
 import com.github.javafaker.Faker;
+import org.apache.commons.lang3.RandomUtils;
 
 import java.util.Locale;
 
@@ -15,8 +16,10 @@ public class DataFakerUtil {
     private static final Faker FAKER = new Faker();
 
     private static final int MAX_STR_LENGTH = 4096;
+    private static final int RANDOM_STR_MIN = 0;
+    private static final int RANDOM_STR_MAX = 8;
 
-    //todo 先直接写一个后面可以根据关键字路由
+    //todo 关键词路由
 
     public static String getStr(String key) {
         return getStr(key, null, null);
@@ -32,7 +35,7 @@ public class DataFakerUtil {
         if (max <= 0) {
             max = MAX_STR_LENGTH;
         }
-        String result = FAKER.name().name();
+        String result = randomGetStr();
         int size = result.length();
 
         if (size < min) {
@@ -88,5 +91,40 @@ public class DataFakerUtil {
 
     public static boolean getBoolean() {
         return FAKER.bool().bool();
+    }
+
+
+    private static String randomGetStr() {
+        int x = RandomUtils.nextInt(RANDOM_STR_MIN, RANDOM_STR_MAX);
+        String res;
+        switch (x) {
+            case 0:
+                res = FAKER.address().city();
+                break;
+            case 1:
+                res = FAKER.overwatch().hero();
+                break;
+            case 2:
+                res = FAKER.book().title();
+                break;
+            case 3:
+                res = FAKER.company().name();
+                break;
+            case 4:
+                res = FAKER.name().name();
+                break;
+            case 5:
+                res = FAKER.zelda().character();
+                break;
+            case 6:
+                res = FAKER.beer().name();
+                break;
+            case 7:
+                res = FAKER.color().name();
+                break;
+            default:
+                res = FAKER.name().name();
+        }
+        return res;
     }
 }

@@ -1,6 +1,7 @@
 package com.sjw.api4j.helper;
 
 import com.google.common.collect.Lists;
+import com.sjw.api4j.enums.ApiDocModeEnum;
 import com.sjw.api4j.model.*;
 import com.sjw.api4j.utils.StringPool;
 import com.sjw.api4j.utils.SysLogUtil;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author shijiawei
@@ -20,13 +22,32 @@ import java.util.List;
  */
 public class ApiDocHelper {
 
-    public static List<ApiTagClass> getAllMethods(String commonPath) {
+    public static List<ApiTagClass> getAllMethods(String commonPath, ApiDocModeEnum apiDocModeEnum,
+                                                  Map<String, CustomMethodConfig> customMethodConfigMap, String customRoot) {
         long start = System.currentTimeMillis();
 
+        List<ApiTagClass> result;
+
+        switch (apiDocModeEnum) {
+            case CURRENT:
+                result = currentModeScan(commonPath);
+                break;
+            case CUSTOM:
+                result = customModeScan(commonPath, customMethodConfigMap, customRoot);
+                break;
+            default:
+                result = currentModeScan(commonPath);
+        }
+
+        SysLogUtil.duration("read all java class and methods", start);
+        return result;
+    }
+
+
+    private static List<ApiTagClass> currentModeScan(String commonPath) {
+        List<ApiTagClass> result = Lists.newArrayList();
         String rootPath = FileHelper.getRootPath();
         Collection<JavaClass> classes = FileHelper.getAllClassses(rootPath);
-        List<ApiTagClass> result = Lists.newArrayList();
-
         for (JavaClass jc : classes) {
             ApiTagClass apiTagClass = new ApiTagClass(AnnotationHelper.getClassPath(jc, commonPath), jc.getComment(), jc.getName());
             boolean isApiClass = false;
@@ -55,10 +76,33 @@ public class ApiDocHelper {
             if (isApiClass) {
                 result.add(apiTagClass);
             }
-
         }
+        return result;
+    }
 
-        SysLogUtil.duration("read all java class and methods", start);
+    private static List<ApiTagClass> customModeScan(String commonPath, Map<String, CustomMethodConfig> customMethodConfigMap, String customRoot) {
+        List<ApiTagClass> result = Lists.newArrayList();
+        Collection<JavaClass> classes = FileHelper.getAllClassses(customRoot);
+        for (JavaClass jc : classes) {
+            ApiTagClass apiTagClass = new ApiTagClass(AnnotationHelper.getClassPath(jc, commonPath), jc.getComment(), jc.getName());
+            String className = jc.getName();
+            CustomMethodConfig customMethodConfig = customMethodConfigMap.get(className);
+            if (null != customMethodConfig) {
+                List<String> methods = customMethodConfig.getMethodNames();
+                List<JavaMethod> classMethdos = jc.getMethods();
+                methods.stream().forEach(m -> {
+                    classMethdos.stream().forEach(n -> {
+                        if (m.equals(n.getName())) {
+                            ApiTagMethod apiTagMethod = new ApiTagMethod(n, new ApiTagPojo());
+                            apiTagClass.addMethods(apiTagMethod);
+                        }
+                    });
+                });
+            }
+            if (apiTagClass.isHaveMethod()) {
+                result.add(apiTagClass);
+            }
+        }
         return result;
     }
 

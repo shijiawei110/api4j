@@ -24,6 +24,8 @@ public class ApiTagPojo {
 
     private String author = StringPool.EMPTY;
 
+    private String name = StringPool.EMPTY;
+
     public String getValue() {
         return value;
     }
@@ -54,5 +56,13 @@ public class ApiTagPojo {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

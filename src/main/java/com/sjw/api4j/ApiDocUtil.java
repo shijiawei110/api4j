@@ -21,9 +21,14 @@ import java.util.List;
 public class ApiDocUtil {
 
     public static void main(String[] args) {
-        ApiDocConf apiDocConf = new ApiDocConf();
-        apiDocConf.setCommonPath("service");
-        makeApiDoc(apiDocConf);
+//
+// apiDocConf = new ApiDocConf();
+//        apiDocConf.setCommonPath("service");
+//        makeApiDoc(apiDocConf);
+        String customPath = "/Users/shijiawei/javaProject/beibei/product-service/product-service-api";
+        ApiDocConf conf = ApiDocConf.customConf(customPath,"serivce");
+        conf.addMethod("ProductStockService.getItemStocksInfo");
+        makeApiDoc(conf);
     }
 
     public static void makeApiDoc(ApiDocConf apiDocConf) {
@@ -41,7 +46,8 @@ public class ApiDocUtil {
         SysLogUtil.sysStart();
         long start = System.currentTimeMillis();
         //获取方法集
-        List<ApiTagClass> apiTagClassList = ApiDocHelper.getAllMethods(apiDocConf.getCommonPath());
+        List<ApiTagClass> apiTagClassList = ApiDocHelper.getAllMethods(apiDocConf.getCommonPath(),apiDocConf.getApiDocModeEnum(),
+                apiDocConf.getCustomMethodConfigMap(),apiDocConf.getRootPath());
         if (CollectionUtils.isEmpty(apiTagClassList)) {
             SysLogUtil.info("没有找到注解标记的需要生成文档的方法");
             return;

@@ -2,6 +2,7 @@ package com.sjw.api4j.model;
 
 import com.google.common.collect.Lists;
 import lombok.Data;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -31,6 +32,13 @@ public class ApiTagClass {
 
     public void addMethods(ApiTagMethod apiTagMethod) {
         methods.add(apiTagMethod);
+    }
+
+    public boolean isHaveMethod() {
+        if (CollectionUtils.isEmpty(methods)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

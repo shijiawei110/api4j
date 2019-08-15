@@ -8,6 +8,7 @@ package com.sjw.api4j.enums;
 public enum ApiTagParamsEnum {
     VALUE("value"),
     AUTHOR("author"),
+    NAME("name"),
     PROTOCOL("protocol");
 
     private String value;

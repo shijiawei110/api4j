@@ -3,6 +3,7 @@ package com.sjw.api4j.model;
 import com.sjw.api4j.enums.ProtocolEnum;
 import com.thoughtworks.qdox.model.JavaMethod;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -19,14 +20,7 @@ public class ApiTagMethod {
     private String note;
     private ProtocolEnum protocol;
     private String author;
-
-    public ApiTagMethod(JavaMethod javaMethod, String tagValue, ProtocolEnum protocol, String author) {
-        this.javaMethod = javaMethod;
-        this.tagValue = tagValue;
-        this.protocol = protocol;
-        this.author = author;
-        this.note = javaMethod.getComment();
-    }
+    private String name;
 
     public ApiTagMethod(JavaMethod javaMethod, ApiTagPojo apiTagPojo) {
         this.javaMethod = javaMethod;
@@ -34,6 +28,12 @@ public class ApiTagMethod {
         this.tagValue = apiTagPojo.getValue();
         this.protocol = apiTagPojo.getProtocol();
         this.author = apiTagPojo.getAuthor();
+        String name = apiTagPojo.getName();
+        if (StringUtils.isBlank(name)) {
+            this.name = javaMethod.getName();
+        } else {
+            this.name = apiTagPojo.getName();
+        }
     }
 
     @Override

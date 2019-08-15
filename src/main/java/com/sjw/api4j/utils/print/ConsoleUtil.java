@@ -35,6 +35,7 @@ public class ConsoleUtil {
 
     private static void printConsoleMethod(ApiMethodInfo apiMethodInfo) {
         //common
+        SysLogUtil.apiParamKv("接口名称", apiMethodInfo.getName());
         SysLogUtil.apiParamKv("接口路径", apiMethodInfo.getPath());
         SysLogUtil.apiParamKv("接口类型", apiMethodInfo.getHttpTypeEnum().getValue());
         SysLogUtil.apiParamKv("接口作者", apiMethodInfo.getAuthor());
