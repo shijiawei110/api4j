@@ -23,7 +23,7 @@ public class SpringMvcController {
      * 这是mvc get test1 note.
      */
     @GetMapping("/test1")
-    @ApiTag(name = "mvc测试接口", value = "这是mvc get test1", author = "shijiawei")
+//    @ApiTag(name = "mvc测试接口", value = "这是mvc get test1", author = "shijiawei")
     public Movie getTest1(@RequestParam(value = "test_name", required = false) String name, Integer id) {
         return null;
     }

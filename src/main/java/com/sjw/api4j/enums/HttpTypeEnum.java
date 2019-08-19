@@ -6,9 +6,9 @@ package com.sjw.api4j.enums;
  * @date 2019/7/30
  */
 public enum HttpTypeEnum {
-    POST("post"),
+    POST("POST"),
     UNKNOWN("unknown"),
-    GET("get");
+    GET("GET");
 
     private String value;
 

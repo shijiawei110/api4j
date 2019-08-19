@@ -19,7 +19,7 @@ import java.util.List;
  * 这是dubbo controller class的注解
  */
 @Path("dubbo-controller")
-//@ApiTag(value = "kkkk", protocol = ProtocolEnum.DUBBO)
+@ApiTag(value = "kkkk", protocol = ProtocolEnum.DUBBO)
 public interface DubboController {
 
     /**

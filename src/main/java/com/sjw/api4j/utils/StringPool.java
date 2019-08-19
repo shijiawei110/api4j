@@ -1,5 +1,7 @@
 package com.sjw.api4j.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author shijiawei
  * @version StringPool.java, v 0.1
@@ -72,4 +74,22 @@ public class StringPool {
     public static final String SUCCESS = "success";
     public static final String QUOTATION = "\"";
     public static final String REAL_DOT = "\\.";
+    public static final String YES_CN = "是";
+    public static final String NO_CN = "否";
+
+
+    public static String nullEmpty(String v) {
+        if (StringUtils.isBlank(v)) {
+            return EMPTY;
+        }
+        return v;
+    }
+
+    public static String trueFlase(boolean v) {
+        if (v) {
+            return YES_CN;
+        } else {
+            return NO_CN;
+        }
+    }
 }

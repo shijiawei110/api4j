@@ -71,6 +71,11 @@ public class BaseParams {
     private int minLimit = -1;
     private int maxLimit = -1;
 
+    /**
+     * 递归深度
+     */
+    private int circleDeep = 0;
+
 
     /**
      * 子参数集 (只有在是java自定义类型的时候才有)

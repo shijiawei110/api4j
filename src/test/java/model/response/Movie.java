@@ -44,11 +44,11 @@ public class Movie extends FatherRes implements Serializable{
     /**
      * 出参list注释
      */
-//    private List<String> strList;
+    private List<String> strList;
     /**
      * 出参book-list注释
      */
-    private List<Book> bookList;
+//    private List<Book> bookList;
 
     @Override
     public String toString() {

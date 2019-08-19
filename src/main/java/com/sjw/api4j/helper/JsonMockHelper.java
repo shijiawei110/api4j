@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class JsonMockHelper {
 
-    private static final int ARRAY_NUM = 3;
+    private static final int ARRAY_NUM = 2;
 
     public static boolean isNeedJsonInput(boolean isGet, BaseParams baseParams) {
         if (isGet) {

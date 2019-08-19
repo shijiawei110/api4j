@@ -3,6 +3,7 @@ package com.sjw.api4j.helper;
 import com.google.common.collect.Lists;
 import com.sjw.api4j.enums.ApiDocModeEnum;
 import com.sjw.api4j.model.*;
+import com.sjw.api4j.utils.CountUtil;
 import com.sjw.api4j.utils.StringPool;
 import com.sjw.api4j.utils.SysLogUtil;
 import com.thoughtworks.qdox.model.*;
@@ -159,7 +160,9 @@ public class ApiDocHelper {
                 param.setRequired(AnnotationHelper.reqGetRequired(parameter.getAnnotations()));
                 result.addChild(param);
             } else {
-                result = commonGetParams(parameter.getJavaClass(), null);
+                CountUtil countUtil = new CountUtil();
+                result = commonGetParams(parameter.getJavaClass(), null, countUtil);
+                result.setCircleDeep(countUtil.get());
             }
         }
         return result;
@@ -172,13 +175,16 @@ public class ApiDocHelper {
         if (ClassNameHelper.isVoid(fullName)) {
             return null;
         }
-        return commonGetParams(javaClass, null);
+        CountUtil countUtil = new CountUtil();
+        BaseParams result = commonGetParams(javaClass, null, countUtil);
+        result.setCircleDeep(countUtil.get());
+        return result;
     }
 
     /**
      * 标准统一递归遍历出参
      */
-    private static BaseParams commonGetParams(JavaClass javaClass, JavaField javaField) {
+    private static BaseParams commonGetParams(JavaClass javaClass, JavaField javaField, CountUtil circleDeep) {
         BaseParams result;
         JavaClass realClass = javaClass;
         boolean isFx = false;
@@ -224,7 +230,7 @@ public class ApiDocHelper {
                         getFieldIsMust(javaField), getLengthLimit(javaField));
             }
         }
-
+        circleDeep.incre();
         //对自定义类进行拆解递归分析
         for (JavaField field : realClass.getFields()) {
             //排除类变量
@@ -237,10 +243,10 @@ public class ApiDocHelper {
             }
             //如果是泛型类型,需要定位到泛型参数
             if (isFx && isFxFidld(field)) {
-                result.addChild(commonGetParams(fxClass, field));
+                result.addChild(commonGetParams(fxClass, field, circleDeep));
                 continue;
             }
-            result.addChild(commonGetParams(field.getType(), field));
+            result.addChild(commonGetParams(field.getType(), field, circleDeep));
         }
         return result;
     }

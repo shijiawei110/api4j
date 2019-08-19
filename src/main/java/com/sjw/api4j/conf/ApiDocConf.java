@@ -34,11 +34,17 @@ public class ApiDocConf {
     /**
      * 生成文档方式
      */
-    private ApiDocPrintTypeEnum apiDocPrintTypeEnum;
+    private ApiDocPrintTypeEnum apiDocPrintTypeEnum = ApiDocPrintTypeEnum.CONSOLE;
     /**
      * 自定义生成模式指定的方法
      */
     private Map<String, CustomMethodConfig> customMethodConfigMap = Maps.newHashMap();
+
+    /**
+     * 生成md,html文件等的指定路径
+     * -> 如果未指定默认为 项目路径的test resources（没有这个路径的话 直接报错）
+     */
+    private String docOutputPath;
 
     public static ApiDocConf defaultConf() {
         return defaultConf(null);
@@ -96,6 +102,14 @@ public class ApiDocConf {
      */
     public void addClass() {
 
+    }
+
+    /**
+     * 设置为md输出
+     */
+    public ApiDocConf mdSet() {
+        apiDocPrintTypeEnum = ApiDocPrintTypeEnum.MD;
+        return this;
     }
 
 }

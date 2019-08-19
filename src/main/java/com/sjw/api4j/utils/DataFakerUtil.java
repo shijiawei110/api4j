@@ -19,8 +19,6 @@ public class DataFakerUtil {
     private static final int RANDOM_STR_MIN = 0;
     private static final int RANDOM_STR_MAX = 8;
 
-    //todo 关键词路由
-
     public static String getStr(String key) {
         return getStr(key, null, null);
     }
