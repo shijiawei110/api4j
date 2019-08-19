@@ -1,8 +1,8 @@
 package com.sjw.api4j.utils.print;
 
 import com.sjw.api4j.helper.JsonMockHelper;
+import com.sjw.api4j.model.ApiClassInfo;
 import com.sjw.api4j.model.ApiMethodInfo;
-import com.sjw.api4j.model.ApiTagClass;
 import com.sjw.api4j.model.BaseParams;
 import com.sjw.api4j.utils.StringPool;
 import com.sjw.api4j.utils.SysLogUtil;
@@ -24,13 +24,16 @@ public class ConsoleUtil {
     private static final int ALL_NUM = JG_NUM + TOP_NUM;
     private static final String CIRCLR_SJ = "- ";
 
-    public static void print(ApiTagClass apiTagClass, List<ApiMethodInfo> apiMethodInfos) {
-        String title = "controller name : " + apiTagClass.getControllerName();
-        SysLogUtil.title(title);
-        apiMethodInfos.forEach(p -> {
-            printConsoleMethod(p);
-            SysLogUtil.fg();
+    public static void print(List<ApiClassInfo> finalClassPojoList) {
+        finalClassPojoList.stream().forEach(pojo -> {
+            String title = "controller name : " + pojo.getControllerName();
+            SysLogUtil.title(title);
+            pojo.getMethodInfos().stream().forEach(p -> {
+                printConsoleMethod(p);
+                SysLogUtil.fg();
+            });
         });
+
     }
 
     private static void printConsoleMethod(ApiMethodInfo apiMethodInfo) {

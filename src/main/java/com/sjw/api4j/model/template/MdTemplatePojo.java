@@ -66,6 +66,16 @@ public class MdTemplatePojo {
      */
     private int outputDeepMax;
 
+    /**
+     * 入参示例json
+     */
+    private String inputJson = StringPool.EMPTY;
+
+    /**
+     * 出参示例json
+     */
+    private String outputJson = StringPool.EMPTY;
+
     public MdTemplatePojo() {
 
     }

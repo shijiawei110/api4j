@@ -160,7 +160,7 @@ public class ApiDocHelper {
                 param.setRequired(AnnotationHelper.reqGetRequired(parameter.getAnnotations()));
                 result.addChild(param);
             } else {
-                CountUtil countUtil = new CountUtil();
+                CountUtil countUtil = new CountUtil(1);
                 result = commonGetParams(parameter.getJavaClass(), null, countUtil);
                 result.setCircleDeep(countUtil.get());
             }
@@ -175,7 +175,7 @@ public class ApiDocHelper {
         if (ClassNameHelper.isVoid(fullName)) {
             return null;
         }
-        CountUtil countUtil = new CountUtil();
+        CountUtil countUtil = new CountUtil(1);
         BaseParams result = commonGetParams(javaClass, null, countUtil);
         result.setCircleDeep(countUtil.get());
         return result;

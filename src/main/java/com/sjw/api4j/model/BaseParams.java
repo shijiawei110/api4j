@@ -74,7 +74,7 @@ public class BaseParams {
     /**
      * 递归深度
      */
-    private int circleDeep = 0;
+    private int circleDeep = 1;
 
 
     /**

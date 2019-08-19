@@ -3,6 +3,8 @@ package com.sjw.api4j.utils.print;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sjw.api4j.helper.DocPrintHelper;
+import com.sjw.api4j.helper.JsonMockHelper;
+import com.sjw.api4j.model.ApiClassInfo;
 import com.sjw.api4j.model.ApiMethodInfo;
 import com.sjw.api4j.model.BaseParams;
 import com.sjw.api4j.model.template.MdTemplateParamPojo;
@@ -28,20 +30,22 @@ import java.util.Map;
  */
 public class MdDocUtil {
 
-    public static void print(List<ApiMethodInfo> apiMethodInfos, int classIndex, String outputPath) {
+    public static void print(List<ApiClassInfo> pojos, String outputPath) {
         List<MdTemplatePojo> mdTemplatePojos = Lists.newArrayList();
-        int methodIndex = 1;
-        for (ApiMethodInfo apiMethodInfo : apiMethodInfos) {
-            if (null == apiMethodInfo) {
-                continue;
+        pojos.stream().forEach(pojo -> {
+            int methodIndex = 1;
+            for (ApiMethodInfo apiMethodInfo : pojo.getMethodInfos()) {
+                if (null == apiMethodInfo) {
+                    continue;
+                }
+                //计算序号
+                String index = DocPrintHelper.getIndex(pojo.getClassIndex(), methodIndex);
+                //构建输出的各项参数
+                MdTemplatePojo mdTemplatePojo = buildTemplatePojo(apiMethodInfo, index);
+                mdTemplatePojos.add(mdTemplatePojo);
+                methodIndex++;
             }
-            //计算序号
-            String index = DocPrintHelper.getIndex(classIndex, methodIndex);
-            //构建输出的各项参数
-            MdTemplatePojo mdTemplatePojo = buildTemplatePojo(apiMethodInfo, index);
-            mdTemplatePojos.add(mdTemplatePojo);
-            methodIndex++;
-        }
+        });
         //执行文档生成
         doMdTemplate(mdTemplatePojos);
     }
@@ -62,10 +66,21 @@ public class MdDocUtil {
         List<MdTemplateParamPojo> paramsInput = Lists.newArrayList();
         List<MdTemplateParamPojo> paramsOutput = Lists.newArrayList();
         //压栈递归取参数列表
-        buildParam(baseParamsInput, paramsInput, 1, deepCircleMaxInput);
-        buildParam(baseParamsOutput, paramsOutput, 1, deepCircleMaxOutput);
+        if (baseParamsInput.isJavaType()) {
+            //不是对象入参也就是Get请求
+            baseParamsInput.getChilds().stream().forEach(p -> buildParam(p, paramsInput, 0, deepCircleMaxInput));
+        } else {
+            buildParam(baseParamsInput, paramsInput, 0, deepCircleMaxInput);
+        }
+        buildParam(baseParamsOutput, paramsOutput, 0, deepCircleMaxOutput);
         result.setInputParams(paramsInput);
         result.setOutputParams(paramsOutput);
+        if (JsonMockHelper.isNeedJsonInput(apiMethodInfo.getHttpTypeEnum().isGet(), baseParamsInput)) {
+            result.setInputJson(JsonMockHelper.makeMockJson(baseParamsInput));
+        }
+        if (JsonMockHelper.isNeedJsonOutput(baseParamsOutput)) {
+            result.setOutputJson(JsonMockHelper.makeMockJson(baseParamsOutput));
+        }
         return result;
     }
 
@@ -79,8 +94,8 @@ public class MdDocUtil {
         }
         MdTemplateParamPojo mdTemplateParamPojo = new MdTemplateParamPojo(baseParams);
         //计算md渲染的各项参数
-        mdTemplateParamPojo.setSjNum(deep);
-        mdTemplateParamPojo.setHbNum(deepMax - deep);
+        mdTemplateParamPojo.setSjNum(deepMax - deep);
+        mdTemplateParamPojo.setHbNum(deep);
 
         result.add(mdTemplateParamPojo);
         List<BaseParams> childs = baseParams.getChilds();
@@ -98,7 +113,6 @@ public class MdDocUtil {
             SysLogUtil.info("md no doc to output");
             return;
         }
-
         try {
             Configuration configuration = new Configuration(Configuration.getVersion());
             //todo 需要弄清楚如何在本项目中获取模板路径  和如何在被依赖的项目中获取本项目的路径???

@@ -7,6 +7,15 @@ package com.sjw.api4j.utils;
  * 计数器
  */
 public class CountUtil {
+
+    public CountUtil() {
+
+    }
+
+    public CountUtil(int num) {
+        this.num = num;
+    }
+
     private int num;
 
     public void incre() {

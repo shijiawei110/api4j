@@ -3,6 +3,7 @@ package com.sjw.api4j.model.template;
 import com.sjw.api4j.model.BaseParams;
 import com.sjw.api4j.utils.StringPool;
 import lombok.Data;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -64,11 +65,12 @@ public class MdTemplateParamPojo {
         String name;
         String type;
         if (baseParams.isJavaType()) {
-            name = wrapperName(baseParams.getName());
-            type = wrapperType();
-        } else {
             name = baseParams.getName();
             type = baseParams.getTypeAbbr();
+        } else {
+            //使用type填充名称
+            name = wrapperName(baseParams.getTypeAbbr());
+            type = wrapperType();
         }
         boolean isRequired = baseParams.isRequired();
         boolean isArray = baseParams.isArray();

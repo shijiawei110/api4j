@@ -24,6 +24,7 @@ public class ApiTagClass {
 
     private List<ApiTagMethod> methods = Lists.newArrayList();
 
+
     public ApiTagClass(String path, String note, String controllerName) {
         this.path = path;
         this.note = note;

@@ -1,9 +1,10 @@
 package com.sjw.api4j;
 
+import com.google.common.collect.Lists;
 import com.sjw.api4j.conf.ApiDocConf;
 import com.sjw.api4j.enums.ApiDocPrintTypeEnum;
 import com.sjw.api4j.helper.ApiDocHelper;
-import com.sjw.api4j.model.ApiMethodInfo;
+import com.sjw.api4j.model.ApiClassInfo;
 import com.sjw.api4j.model.ApiTagClass;
 import com.sjw.api4j.utils.SysLogUtil;
 import com.sjw.api4j.utils.print.ConsoleUtil;
@@ -26,6 +27,7 @@ public class ApiDocUtil {
 //
         ApiDocConf apiDocConf = new ApiDocConf();
         apiDocConf.mdSet().setCommonPath("service-test");
+//        apiDocConf.setCommonPath("service-test");
         makeApiDoc(apiDocConf);
 //        String customPath = "/Users/shijiawei/javaProject/beibei/product-service/product-service-api";
 //        ApiDocConf conf = ApiDocConf.customConf(customPath,"serivce");
@@ -58,19 +60,25 @@ public class ApiDocUtil {
         ApiDocPrintTypeEnum printType = apiDocConf.getApiDocPrintTypeEnum();
         int classIndex = 1;
         //将包装method build成参数集
+        List<ApiClassInfo> finalClassPojoList = Lists.newArrayList();
         for (ApiTagClass apiTagClass : apiTagClassList) {
-            List<ApiMethodInfo> apiMethodInfos = ApiDocHelper.analyMethods(apiTagClass);
-            switch (printType) {
-                case CONSOLE:
-                    ConsoleUtil.print(apiTagClass, apiMethodInfos);
-                    break;
-                case MD:
-                    MdDocUtil.print(apiMethodInfos, classIndex, apiDocConf.getDocOutputPath());
-                    break;
-                default:
-                    ConsoleUtil.print(apiTagClass, apiMethodInfos);
-            }
+            ApiClassInfo apiClassInfo = new ApiClassInfo();
+            apiClassInfo.setControllerName(apiTagClass.getControllerName());
+            apiClassInfo.setMethodInfos(ApiDocHelper.analyMethods(apiTagClass));
+            apiClassInfo.setClassIndex(classIndex);
+            finalClassPojoList.add(apiClassInfo);
             classIndex++;
+        }
+        //进行文档输出
+        switch (printType) {
+            case CONSOLE:
+                ConsoleUtil.print(finalClassPojoList);
+                break;
+            case MD:
+                MdDocUtil.print(finalClassPojoList, apiDocConf.getDocOutputPath());
+                break;
+            default:
+                ConsoleUtil.print(finalClassPojoList);
         }
         SysLogUtil.sysEnd(start);
     }

@@ -36,6 +36,19 @@ public class JsonMockHelper {
         return true;
     }
 
+    public static boolean isNeedJsonInput(BaseParams baseParams) {
+        if (null == baseParams) {
+            return false;
+        }
+        if (baseParams.isJavaType()) {
+            return false;
+        }
+        if (CollectionUtils.isEmpty(baseParams.getChilds())) {
+            return false;
+        }
+        return true;
+    }
+
     public static boolean isNeedJsonOutput(BaseParams baseParams) {
         if (null == baseParams) {
             return false;
