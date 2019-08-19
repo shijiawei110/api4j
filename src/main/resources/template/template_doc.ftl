@@ -22,7 +22,7 @@
     <tr>
         <#if param.hbNum gt 0>
             <#list 1..param.hbNum as i>
-            <td><blockquote></td>
+        <td><blockquote></td>
             </#list>
         </#if>
         <td colspan="${param.sjNum}">${param.name}</td>
@@ -59,7 +59,7 @@ ${pojo.inputJson}
     <tr>
         <#if param.hbNum gt 0>
             <#list 1..param.hbNum as i>
-            <td><blockquote></td>
+        <td><blockquote></td>
             </#list>
         </#if>
         <td colspan="${param.sjNum}">${param.name}</td>
