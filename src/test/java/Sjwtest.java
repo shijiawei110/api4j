@@ -1,6 +1,6 @@
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.sjw.api4j.model.template.MdTemplatePojo;
+import com.sjw.base.apidoc.model.template.MdTemplatePojo;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -21,7 +21,7 @@ public class Sjwtest {
         // 第一步：创建一个Configuration对象，直接new一个对象。构造方法的参数就是freemarker对于的版本号。
         Configuration configuration = new Configuration(Configuration.getVersion());
         // 第二步：设置模板文件所在的路径。
-        configuration.setDirectoryForTemplateLoading(new File("/Users/shijiawei/javaProject/sjwOpen/api4j/src/test/resources/template"));
+        configuration.setDirectoryForTemplateLoading(new File("/Users/shijiawei/javaProject/sjwOpen/apiforj/src/test/resources/template"));
         // 第三步：设置模板文件使用的字符集。一般就是utf-8.
         configuration.setDefaultEncoding("utf-8");
         // 第四步：加载一个模板，创建一个模板对象。
@@ -50,7 +50,7 @@ public class Sjwtest {
         list.add(pojo2);
         dataModel.put("pojos", list);
         // 第六步：创建一个Writer对象，一般创建一FileWriter对象，指定生成的文件名。
-        Writer out = new FileWriter(new File("/Users/shijiawei/javaProject/sjwOpen/api4j/src/test/resources/doc/test_doc.md"));
+        Writer out = new FileWriter(new File("/Users/shijiawei/javaProject/sjwOpen/apiforj/src/test/resources/doc/test_doc.md"));
         // 第七步：调用模板对象的process方法输出文件。
         template.process(dataModel, out);
         // 第八步：关闭流。

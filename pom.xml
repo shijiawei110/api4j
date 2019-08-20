@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.sjw</groupId>
+    <groupId>com.sjw.base</groupId>
     <artifactId>api4j</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0-BETA</version>
+    <version>1.0.2-SNAPSHOT</version>
 
 
     <properties>
@@ -124,17 +124,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- maven编译插件 指定jdk1.8编译版本-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

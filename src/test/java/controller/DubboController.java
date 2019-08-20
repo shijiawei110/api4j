@@ -1,16 +1,13 @@
 package controller;
 
-import com.sjw.api4j.annotation.ApiTag;
-import com.sjw.api4j.enums.ProtocolEnum;
+import com.sjw.base.apidoc.annotation.ApiTag;
+import com.sjw.base.apidoc.enums.ProtocolEnum;
 import model.request.ParamDemo;
 import model.response.BaseResponse;
 import model.response.Movie;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
-import java.util.List;
 
 /**
  * @author shijiawei
