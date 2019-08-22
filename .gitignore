@@ -21,26 +21,20 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-
 .gradle
 .DS_Store
 build
 out
 .idea
-.gradle
 target
-.gradle
-.DS_Store
 build
 out
 .idea
-.gradle
 target
 .idea/
 logs/
 *.log
 *.iml
 target/
-.DS_store
 *.lock
 
