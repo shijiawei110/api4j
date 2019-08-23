@@ -72,6 +72,10 @@ public class ApiDocConf {
         return apiDocConf;
     }
 
+    public static ApiDocConf customConf(String rootPath) {
+        return customConf(rootPath, null);
+    }
+
     public void addMethod(String raw) {
         if (StringUtils.isBlank(raw)) {
             throw ApiForjException.METHOD_CUSTOM_ERROR;

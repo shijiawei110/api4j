@@ -7,7 +7,7 @@
     <groupId>com.sjw.base</groupId>
     <artifactId>api4j</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.5</version>
 
 
     <properties>
