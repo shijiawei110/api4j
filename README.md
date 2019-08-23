@@ -28,7 +28,6 @@
     <artifactId>api4j</artifactId>
     <version>1.0.5</version>
 </dependency>
-
 ```
 #### 3.2：开始使用
 1. 在您的mvc或者dubbo-rest等接口的class或者method(推荐)上添加注解@ApiTag
@@ -38,7 +37,7 @@
 5. 使用我们 ApiDocUtil 工具类一键运行输出
 
 ```
-	/**
+    /**
      * 这是mvc get test注释，注释会被文档输出
      */
     @RequestMapping("/test")
