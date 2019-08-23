@@ -24,7 +24,7 @@
 
 ```
 <dependency>
-    <groupId>com.sjw.base</groupId>
+    <groupId>io.github.shijiawei110</groupId>
     <artifactId>api4j</artifactId>
     <version>1.0.5</version>
 </dependency>
