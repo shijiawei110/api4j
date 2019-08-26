@@ -16,7 +16,7 @@ import javax.ws.rs.Path;
  * 这是dubbo controller class的注解
  */
 @Path("dubbo-controller")
-@ApiTag(value = "kkkk", protocol = ProtocolEnum.DUBBO,author = "sjw")
+//@ApiTag(value = "kkkk", protocol = ProtocolEnum.DUBBO,author = "sjw")
 public interface DubboController {
 
     /**

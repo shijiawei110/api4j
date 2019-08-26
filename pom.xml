@@ -16,6 +16,12 @@
         <java.version>1.8</java.version>
     </properties>
 
+    <!--maven中央库私服parant-->
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
+    </parent>
 
     <dependencies>
         <!--guava-->

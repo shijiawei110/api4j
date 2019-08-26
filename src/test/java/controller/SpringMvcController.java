@@ -23,7 +23,7 @@ public class SpringMvcController {
      * 这是mvc get test1 note.
      */
     @RequestMapping("/test1")
-    @ApiTag(name = "mvc测试接口", value = "这是mvc get test1", author = "shijiawei")
+//    @ApiTag(name = "mvc测试接口", value = "这是mvc get test1", author = "shijiawei")
     public Integer getTest1(@RequestParam(value = "test_name", required = false) String name) {
         return null;
     }
@@ -62,8 +62,8 @@ public class SpringMvcController {
      * @return
      */
     @PostMapping("/postTest1")
-//    @ApiTag(value = "这是mvc post test1", author = "sjw")
-    public String postTest1(ParamDemo paramDemo, HttpServletRequest request, HttpServletResponse response) {
+    @ApiTag(value = "这是mvc post test1", author = "sjw")
+    public Movie postTest1(ParamDemo paramDemo, HttpServletRequest request, HttpServletResponse response) {
         return null;
     }
 

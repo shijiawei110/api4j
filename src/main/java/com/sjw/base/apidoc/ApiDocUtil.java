@@ -25,18 +25,6 @@ import java.util.List;
  */
 public class ApiDocUtil {
 
-    public static void main(String[] args) {
-//
-        ApiDocConf apiDocConf = new ApiDocConf();
-        apiDocConf.mdSet().setCommonPath("service-test");
-//        apiDocConf.setCommonPath("service-test");
-        makeApiDoc(apiDocConf);
-//        String customPath = "/Users/shijiawei/javaProject/beibei/product-service/product-service-api";
-//        ApiDocConf conf = ApiDocConf.customConf(customPath,"serivce");
-//        conf.addMethod("ProductStockService.getItemStocksInfo");
-//        makeApiDoc(conf);
-    }
-
     public static void makeApiDoc(ApiDocConf apiDocConf) {
         if (null == apiDocConf) {
             apiDocConf = new ApiDocConf();
