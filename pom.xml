@@ -14,7 +14,31 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <!--上传的时候指定java bin目录不然会出错-->
+        <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
     </properties>
+
+    <!--阿帕奇开源证书-->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/shijiawei110/api4j</url>
+        <connection>git@github.com:shijiawei110/api4j.git</connection>
+        <developerConnection>https://github.com/shijiawei110</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>jiawei.shi</name>
+            <email>341922619@qq.com</email>
+            <url>https://github.com/shijiawei110</url>
+        </developer>
+    </developers>
 
     <!--maven中央库私服parant-->
     <parent>
