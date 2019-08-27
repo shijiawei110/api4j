@@ -32,7 +32,7 @@
 #### 3.2：开始使用
 1. 在您的mvc或者dubbo-rest等接口的class或者method(推荐)上添加注解@ApiTag
 2. 推荐在method上添加注解
-3. 注解参数 : name[接口名],value[接口标注],author[接口作者]
+3. 注解参数可选填 : name[接口名],value[接口标注],author[接口作者]
 4. 可以在方法上添加注释,生成文档的时候会输出注释,但是@author @params 等的doc注释不会被录入输出
 5. 使用我们 ApiDocUtil 工具类一键运行输出
 
@@ -68,7 +68,49 @@
 	//比如 指定的请求url为 /getTest/getName 会变成/service/getTest/getName
 	ApiDocUtil.makeApiDoc(ApiDocConf.defaultConf("service").mdSet());
 ```
-#### 3.3：如果你嫌麻烦不想在每个项目依赖api4j,我们可以在当前项目指定去输出其他项目的接口文档
+
+#### 3.3：你可以这样定义一个你的入参或者出参
+
+```
+public class ParamDemo {
+    /**
+     * 在这里写字段含义的注释可以在文档中输出
+     */
+    @NotNull
+    private Long id;
+
+    @JsonProperty("test_id")
+    @Min(1)
+    @Max(5)
+    private Long testId;
+
+    /**
+     * age  jackson注解可以改变字段名
+     */
+    @JsonProperty("test_age")
+    private Integer testAge;
+
+    /**
+     * 名称
+     */
+    @Length(min = 1, max = 100)
+    private String testName;
+
+    @NotBlank
+    private String ok;
+
+    @NotEmpty
+    @Size(min = 1, max = 10)
+    private List<String> reqStrs;
+
+    /**
+     * 书籍实体类
+     */
+    private Book book;
+}
+```
+
+#### 3.4：如果你嫌麻烦不想在每个项目依赖api4j,我们可以在当前项目指定去输出其他项目的接口文档
 
 ```
 		//设置扫描的根路径

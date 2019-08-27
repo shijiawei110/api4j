@@ -16,9 +16,8 @@ import java.util.List;
  */
 @Data
 public class ParamDemo {
-
     /**
-     * id
+     * 在这里写字段含义的注释可以在文档中输出
      */
     @NotNull
     private Long id;
@@ -41,9 +40,6 @@ public class ParamDemo {
     @Length(min = 1, max = 100)
     private String testName;
 
-    @NotNull
-    private Boolean isBoo;
-
     @NotBlank
     private String ok;
 
@@ -55,6 +51,4 @@ public class ParamDemo {
      * 书籍实体类
      */
     private Book book;
-
-//    private List<Movie> movies;
 }
