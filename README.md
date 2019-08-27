@@ -33,7 +33,7 @@
 1. 在您的mvc或者dubbo-rest等接口的class或者method(推荐)上添加注解@ApiTag
 2. 推荐在method上添加注解
 3. 注解参数可选填 : name[接口名],value[接口标注],author[接口作者]
-4. 可以在方法上添加注释,生成文档的时候会输出注释,但是@author @params 等的doc注释不会被录入输出
+4. 可以在方法或者参数上添加注释,生成文档的时候会输出注释,但是@author @params 等的doc注释不会被录入输出
 5. 使用我们 ApiDocUtil 工具类一键运行输出
 
 ```
