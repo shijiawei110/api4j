@@ -26,7 +26,7 @@
 <dependency>
     <groupId>io.github.shijiawei110</groupId>
     <artifactId>api4j</artifactId>
-    <version>1.0.5</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 #### 3.2：开始使用
