@@ -4,6 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <name>api4j</name>
+    <description>this is a light interface document generation tool.</description>
+    <url>https://github.com/shijiawei110/api4j</url>
+
     <groupId>io.github.shijiawei110</groupId>
     <artifactId>api4j</artifactId>
     <packaging>jar</packaging>
@@ -16,7 +20,9 @@
         <java.version>1.8</java.version>
         <!--上传的时候指定java bin目录不然会出错-->
         <javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
+        <gpg.executable>/usr/local/bin/gpg</gpg.executable>
     </properties>
+
 
     <!--阿帕奇开源证书-->
     <licenses>
@@ -29,23 +35,81 @@
 
     <scm>
         <url>https://github.com/shijiawei110/api4j</url>
-        <connection>git@github.com:shijiawei110/api4j.git</connection>
-        <developerConnection>https://github.com/shijiawei110</developerConnection>
+        <connection>scm:git@github.com:shijiawei110/api4j.git</connection>
+        <developerConnection>scm:git@github.com:shijiawei110/api4j.git</developerConnection>
     </scm>
+
     <developers>
         <developer>
-            <name>jiawei.shi</name>
+            <name>shijiawei110</name>
             <email>341922619@qq.com</email>
             <url>https://github.com/shijiawei110</url>
         </developer>
     </developers>
 
-    <!--maven中央库私服parant-->
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
-    </parent>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.3</version>
+                        <configuration>
+                            <source>1.8</source>
+                            <show>private</show>
+                            <nohelp>true</nohelp>
+                            <charset>UTF-8</charset>
+                            <encoding>UTF-8</encoding>
+                            <docencoding>UTF-8</docencoding>
+                            <additionalparam>-Xdoclint:none</additionalparam>  <!-- TODO 临时解决不规范的javadoc生成报错,后面要规范化后把这行去掉 -->
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
+    <!--&lt;!&ndash;maven中央库私服parant&ndash;&gt;-->
+    <!--<parent>-->
+        <!--<groupId>org.sonatype.oss</groupId>-->
+        <!--<artifactId>oss-parent</artifactId>-->
+        <!--<version>9</version>-->
+    <!--</parent>-->
 
     <dependencies>
         <!--guava-->
